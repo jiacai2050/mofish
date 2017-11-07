@@ -1,0 +1,68 @@
+<!-- DOCTYPE HTML -->
+<html>
+
+<head>
+    <title>V2ex Hot Posts</title>
+    <meta charset="utf-8">
+    <meta name="description" content="LeanCloud - 为开发加速">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="shortcut icon" href="http://v2ex.com/static/img/icon_rayps_64.png" type="image/png" />
+    <link rel="apple-touch-icon" href="http://v2ex.com/static/apple-touch-icon.png" />
+    <script src="/av-min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script>
+    var APP_ID = 'vUbVDkqX7D3l5nlGrMB2YNga-gzGzoHsz';
+    var APP_KEY = 'hSeyI7bPX7rENUHyCzNDuyK8';
+
+    AV.init({
+        appId: APP_ID,
+        appKey: APP_KEY
+    });
+
+    let current_day = '<%= current_day %>';
+    today = moment(current_day);
+    yesterday = moment(current_day).add(-1, 'd');
+    tommorrow = moment(current_day).add(1, 'd');
+    let q = new AV.Query('v2ex');
+    q.greaterThanOrEqualTo('updatedAt', today.toDate());
+    q.lessThan('updatedAt', tommorrow.toDate());
+    q.descending('replies');
+
+    window.onload = () => {
+        let table = $('#content');
+        q.find().then(function(results) {
+            let posts = results;
+            for (let p of posts) {
+                p = p.attributes;
+                table.append(`<tr><td>${p['replies']}</td><td><a href='${p.url}'>${p['title']}</a></td></tr`);
+            }
+        }, function(error) {
+            alert(JSON.stringify(error));
+        });
+
+        $("#prev").attr('href', `/${yesterday.format('YYYYMMDD')}`);
+        $("#next").attr('href', `/${tommorrow.format('YYYYMMDD')}`);
+    }
+    </script>
+</head>
+
+<body>
+    <table id="content" border="1" align="center">
+        <tr>
+            <th>回复数</th>
+            <th>标题</th>
+        </tr>
+        <caption>
+            <%= current_day %> V2EX Top Post</caption>
+    </table>
+    <table id="page" border="0" align="center">
+        <tr>
+            <td><a href="" id="prev">前一天</a></td>
+            <td>&nbsp;<a href="" id="next">后一天</a></td>
+        </tr>
+        <tr align="center">
+            <td rowspan="2"><a href="https://github.com/jiacai2050/v2ex">About</a></td>
+    </table>
+</body>

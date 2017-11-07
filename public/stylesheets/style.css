@@ -1,0 +1,32 @@
+body {
+  background: #fff;
+  font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+  color: #666;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: transparent;
+}
+th {
+  text-align: left;
+}
+td {
+  padding: 15px 0;
+  border-top: 1px solid #ddd;
+}
+th:first-child,
+td:first-child {
+  text-align: center;
+  width: 53px;
+}
+a,
+a:visited,
+a:active,
+a:link {
+  color: #666;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
