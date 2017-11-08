@@ -35,10 +35,15 @@
         let table = $('#content');
         q.find().then(function(results) {
             let posts = results;
-            for (let p of posts) {
-                p = p.attributes;
-                table.append(`<tr><td>${p['replies']}</td><td><a href='${p.url}'>${p['title']}</a></td></tr`);
+            if (posts.length < 1) {
+                alert('<%= current_day %> 数据没有采集，请换一天浏览。')
+            } else {
+                for (let p of posts) {
+                    p = p.attributes;
+                    table.append(`<tr><td>${p['replies']}</td><td><a href='${p.url}'>${p['title']}</a></td></tr`);
+                }
             }
+
         }, function(error) {
             alert(JSON.stringify(error));
         });
