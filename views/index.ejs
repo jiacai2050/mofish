@@ -2,9 +2,9 @@
 <html>
 
 <head>
-    <title>V2ex Hot Posts</title>
+    <title>V2EX Top Posts</title>
     <meta charset="utf-8">
-    <meta name="description" content="LeanCloud - 为开发加速">
+    <meta name="description" content="LeanCloud - V2EX 热帖收藏夹">
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="shortcut icon" href="http://v2ex.com/static/img/icon_rayps_64.png" type="image/png" />
@@ -12,6 +12,7 @@
     <script src="/av-min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://ajax.proxy.ustclug.org/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
     var APP_ID = 'vUbVDkqX7D3l5nlGrMB2YNga-gzGzoHsz';
     var APP_KEY = 'hSeyI7bPX7rENUHyCzNDuyK8';
@@ -26,8 +27,8 @@
     yesterday = moment(current_day).add(-1, 'd');
     tommorrow = moment(current_day).add(1, 'd');
     let q = new AV.Query('v2ex');
-    q.greaterThanOrEqualTo('updatedAt', today.toDate());
-    q.lessThan('updatedAt', tommorrow.toDate());
+    q.greaterThanOrEqualTo('created', today.unix());
+    q.lessThan('created', tommorrow.unix());
     q.descending('replies');
 
     window.onload = () => {
@@ -62,7 +63,9 @@
             <td><a href="" id="prev">前一天</a></td>
             <td>&nbsp;<a href="" id="next">后一天</a></td>
         </tr>
-        <tr align="center">
-            <td rowspan="2"><a href="https://github.com/jiacai2050/v2ex">About</a></td>
     </table>
+    <footer>
+        <p>2017 &copy; <a target="_blank" href="https://github.com/jiacai2050/v2ex"> https://github.com/jiacai2050/v2ex</a>. All Rights Reserved. Powered by
+            <a target="_blank" href="https://leancloud.cn/">LeanCloud</a>.</p>
+    </footer>
 </body>
