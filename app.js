@@ -48,9 +48,9 @@ q.descending('createdAt');
 
 app.get('/feed', function(req, res) {
     res.type('application/xml');
-    if (feed_cache == '' || moment().hour() < 3 || req.params.refresh) {
+    if (feed_cache == '' || moment().hour() < 3 || req.query.refresh) {
         q.find().then(function(results) {
-
+            console.log('update feed xml');
             for(let post of results) {
                 feed.item({
                     title: `[${post.get('node')['title']}][${moment(post.get('created') * 1000).format('YYYYMMDD')}] ${post.get('title')}`,
