@@ -17,12 +17,13 @@
     "leanengine": "^3.0.0",
     "moment": "^2.19.1",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "rss": "^1.2.2"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
   },
   "engines": {
-    "node": "6.x"
+    "node": "8.x"
   }
 }
