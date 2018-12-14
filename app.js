@@ -43,7 +43,7 @@ var feed = new RSS({
 });
 var feed_cache = '';
 let q = new storage.Query('v2ex');
-q.limit(1000);
+q.limit(100);
 q.descending('createdAt');
 
 app.get('/feed', function(req, res) {
