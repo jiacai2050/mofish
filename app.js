@@ -49,6 +49,7 @@ q.descending('createdAt');
 app.get('/feed', function(req, res) {
     res.type('application/xml');
     if (feed_cache == '' || moment().hour() < 3 || req.query.refresh) {
+        var num_item = 0;
         q.find().then(function(results) {
             console.log('update feed xml');
             for(let post of results) {
@@ -59,6 +60,10 @@ app.get('/feed', function(req, res) {
                     date: post.get('last_modified') * 1000,
                     categories: [post.get('node')['title']]
                 });
+                num_item ++;
+                if(num_item > 3100) {
+                    break; // avoid inoreader.com's block 
+                }
             }
             feed_cache = feed.xml();
             res.send(feed_cache);
