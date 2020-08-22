@@ -17,7 +17,7 @@
       var APP_ID = 'vUbVDkqX7D3l5nlGrMB2YNga-gzGzoHsz';
       var APP_KEY = 'hSeyI7bPX7rENUHyCzNDuyK8';
 
-      var current_day = moment().format('YYYYMMDD');
+      var current_day = moment().add(-1, 'd').format('YYYYMMDD');
       var m = /day=(\d+)/.exec(window.location.search);
       if(m) {
         current_day = m[1];
@@ -25,7 +25,6 @@
       AV.init({
         appId: APP_ID,
         appKey: APP_KEY,
-        serverURLs: 'https://avoscloud.com',
       });
 
       today = moment(current_day);
@@ -98,7 +97,7 @@
       </tr>
     </table>
     <footer>
-      <p>2017 &copy; <a target="_blank" href="https://github.com/jiacai2050/v2ex"> https://github.com/jiacai2050/v2ex</a>. All Rights Reserved. Powered by
+      <p>2020 &copy; <a target="_blank" href="https://github.com/jiacai2050/v2ex"> https://github.com/jiacai2050/v2ex</a>. All Rights Reserved. Powered by
         <a target="_blank" href="https://leancloud.cn/">LeanCloud</a>.</p>
     </footer>
   </body>
