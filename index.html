@@ -10,75 +10,9 @@
     <link rel="apple-touch-icon" href="https://v2ex.com/static/apple-touch-icon.png" />
     <link rel="stylesheet" href="public/stylesheets/style.css">
     <script src="public/av-min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://momentjs.com/downloads/moment.min.js"></script>
-    <script src="https://ajax.proxy.ustclug.org/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>
-      var APP_ID = 'vUbVDkqX7D3l5nlGrMB2YNga-gzGzoHsz';
-      var APP_KEY = 'hSeyI7bPX7rENUHyCzNDuyK8';
-
-      var current_day = moment().add(-1, 'd').format('YYYYMMDD');
-      var m = /day=(\d+)/.exec(window.location.search);
-      if(m) {
-        current_day = m[1];
-      }
-      AV.init({
-        appId: APP_ID,
-        appKey: APP_KEY,
-      });
-
-      today = moment(current_day);
-      yesterday = moment(current_day).add(-1, 'd');
-      tommorrow = moment(current_day).add(1, 'd');
-      let q = new AV.Query('v2ex');
-      q.greaterThanOrEqualTo('created', today.unix());
-      q.lessThan('created', tommorrow.unix());
-      q.descending('replies');
-
-      const KEY_LEFT = 37;
-      const KEY_UP = 38;
-      const KEY_RIGHT = 39;
-      const KEY_DOWN = 40;
-      const KEY_J = 106;
-      const KEY_K = 107;
-      window.onload = () => {
-        document.getElementById("current_day").innerHTML = current_day;
-        let table = $('#content');
-        q.find().then(function(results) {
-          let posts = results;
-          if (posts.length < 1) {
-            alert(`${current_day}数据没有采集，请换一天浏览。`);
-          } else {
-            for (let p of posts) {
-              p = p.attributes;
-              table.append(`<tr><td>${p['replies']}</td><td><a href='${p.url}'>${p['title']}</a></td></tr`);
-            }
-          }
-
-        }, function(error) {
-          alert(JSON.stringify(error));
-        });
-
-        let path = window.location.pathname;
-        $("#prev").attr('href', `${path}?day=${yesterday.format('YYYYMMDD')}`);
-        $("#next").attr('href', `${path}?day=${tommorrow.format('YYYYMMDD')}`);
-
-        document.addEventListener("keypress", (e) => {
-	      switch (e.keyCode) {
-	      case KEY_LEFT:
-	      case KEY_J:
-            window.location = `${path}?day=${yesterday.format('YYYYMMDD')}`;
-		    break;
-	      case KEY_RIGHT:
-	      case KEY_K:
-            window.location = `${path}?day=${tommorrow.format('YYYYMMDD')}`;
-		    break;
-          default:
-            console.log(e);
-	      }
-        }, false);
-      }
-    </script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="public/app.js"></script>
   </head>
 
   <body>
