@@ -96,19 +96,19 @@ async function fetch_post() {
   q.greaterThanOrEqualTo('created', yesterday.unix());
   q.lessThan('created', today.unix());
   q.descending('replies');
-  let table = ['<table>'];
-  table.push('<tr><th>Node</th><th>Title</th><th>Replies</th><th>Created</th></tr>');
+  let table = ['<table border=1>'];
+  table.push('<tr><th>Title</th><th>Body</th><th>Replies</th><th>Node</th><th>Created</th></tr>');
   let results = await q.find();
   for(let post of results) {
     let o = {
       node: post.get('node')['title'],
-      // description: post.get('content_rendered'),
+      description: post.get('content_rendered'),
       url: post.get('url'),
       replies: post.get('replies'),
-      date: moment(post.get('created') * 1000).format('YYYYMMDD hh:mm:ss'),
+      created: moment(post.get('created') * 1000).format('YYYY-MM-DD hh:mm:ss'),
       title: post.get('title')
     }
-    table.push(`<tr><td>${o.node}</td><td><a href="${o.url}">${o.title}</a></td><td>${o.replies}</td><td>${o.date}</td></tr>`);
+    table.push(`<tr><td><a href="${o.url}">${o.title}</a></td><td>${o.description}</td><td>${o.replies}</td><td>${o.node}</td><td>${o.created}</td></tr>`);
     // console.log(post);
   }
   table.push('</table>');
