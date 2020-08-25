@@ -1,0 +1,34 @@
+name: 'v2ex hot posts'
+
+on:
+  push:
+  schedule:
+    - cron: '0 9 * * *'
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: npm i
+      - shell: bash
+        env:
+          LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
+          LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
+        run: |
+          node app > result.html
+      - name: 'Get Date'
+        run: echo "::set-env name=REPORT_DATE::$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')"
+      - name: 'Send mail'
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: (${{env.REPORT_DATE}}) V2EX Hot Posts
+          body: file://result.html
+          to: jiacai2050+v2ex@gmail.com
+          from: GitHub Actions
+          content_type: text/html

@@ -33,13 +33,13 @@ var render_params = {
   appKey: process.env.LEANCLOUD_APP_KEY,
 };
 app.get('/', function(req, res) {
-    res.render('index', Object.assign(render_params, { current_day: moment().add(-1, 'd').format('YYYYMMDD') }));
+  res.render('index', Object.assign(render_params, { current_day: moment().add(-1, 'd').format('YYYYMMDD') }));
 });
 
 var feed = new RSS({
-    title: "V2EX Hot Posts",
-    feed_url: '/feed',
-    ttl: 60 * 60 * 6, // 6 hours
+  title: "V2EX Hot Posts",
+  feed_url: '/feed',
+  ttl: 60 * 60 * 6, // 6 hours
 });
 var feed_cache = '';
 let q = new storage.Query('v2ex');
@@ -47,38 +47,74 @@ q.limit(1000);
 q.descending('createdAt');
 
 app.get('/feed', function(req, res) {
-    res.type('application/xml');
-    if (feed_cache == '' || moment().hour() < 3 || req.query.refresh) {
-        var num_item = 0;
-        q.find().then(function(results) {
-            console.log('update feed xml');
-            for(let post of results) {
-                feed.item({
-                    title: `[${post.get('node')['title']}][${moment(post.get('created') * 1000).format('YYYYMMDD')}] ${post.get('title')}`,
-                    description: post.get('content_rendered'),
-                    url: post.get('url'),
-                    date: post.get('last_modified') * 1000,
-                    categories: [post.get('node')['title']]
-                });
-                num_item ++;
-                if(num_item > 3100) {
-                    break; // avoid inoreader.com's block 
-                }
-            }
-            feed_cache = feed.xml();
-            res.send(feed_cache);
-        }).catch(function(err) {
-            console.error(err);
-            feed_cache = '';
-            res.send(feed.xml())
+  res.type('application/xml');
+  if (feed_cache == '' || moment().hour() < 3 || req.query.refresh) {
+    var num_item = 0;
+    q.find().then(function(results) {
+      console.log('update feed xml');
+      for(let post of results) {
+        feed.item({
+          title: `[${post.get('node')['title']}][${moment(post.get('created') * 1000).format('YYYYMMDD')}] ${post.get('title')}`,
+          description: post.get('content_rendered'),
+          url: post.get('url'),
+          date: post.get('last_modified') * 1000,
+          categories: [post.get('node')['title']]
         });
-    } else {
-        res.send(feed_cache);
-    }
+        num_item ++;
+        if(num_item > 3100) {
+          break; // avoid inoreader.com's block
+        }
+      }
+      feed_cache = feed.xml();
+      res.send(feed_cache);
+    }).catch(function(err) {
+      console.error(err);
+      feed_cache = '';
+      res.send(feed.xml())
+    });
+  } else {
+    res.send(feed_cache);
+  }
 });
 
 app.get('/:current_day', function(req, res) {
-    res.render('index', Object.assign(render_params, { current_day: req.params['current_day'] }));
+  res.render('index', Object.assign(render_params, { current_day: req.params['current_day'] }));
 });
 
 module.exports = app;
+
+async function fetch_post() {
+  AV.init({
+    appId: process.env.LEANCLOUD_APP_ID,
+    appKey: process.env.LEANCLOUD_APP_KEY,
+  });
+  let today = moment().startOf('day');
+  let yesterday = moment().add(-1, 'd').startOf('day');
+  // console.log(today.toString(), yesterday.toString());
+  let q = new storage.Query('v2ex');
+  q.limit(1000);
+  q.greaterThanOrEqualTo('created', yesterday.unix());
+  q.lessThan('created', today.unix());
+  q.descending('replies');
+  let table = ['<table>'];
+  table.push('<tr><th>Node</th><th>Title</th><th>Replies</th><th>Created</th></tr>');
+  let results = await q.find();
+  for(let post of results) {
+    let o = {
+      node: post.get('node')['title'],
+      // description: post.get('content_rendered'),
+      url: post.get('url'),
+      replies: post.get('replies'),
+      date: moment(post.get('created') * 1000).format('YYYYMMDD hh:mm:ss'),
+      title: post.get('title')
+    }
+    table.push(`<tr><td>${o.node}</td><td><a href="${o.url}">${o.title}</a></td><td>${o.replies}</td><td>${o.date}</td></tr>`);
+    // console.log(post);
+  }
+  table.push('</table>');
+  console.log(table.join(''));
+}
+
+if (require.main === module) {
+  fetch_post();
+}
