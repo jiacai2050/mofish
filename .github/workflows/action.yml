@@ -1,12 +1,12 @@
-name: 'v2ex hot posts'
+name: 'send-mail'
 
 on:
   push:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 1 * * *'
 
 jobs:
-  bot:
+  send-mail:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,8 +16,9 @@ jobs:
         env:
           LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
           LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
-        run: |
-          node app > result.html
+          TZ: 'Asia/Shanghai'
+        run:
+          node robot | tee result.html
       - name: 'Get Date'
         run: echo "::set-env name=REPORT_DATE::$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')"
       - name: 'Send mail'
@@ -32,3 +33,16 @@ jobs:
           to: jiacai2050+v2ex@gmail.com
           from: GitHub Actions
           content_type: text/html
+  fetch-posts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: npm i
+      - shell: bash
+        env:
+          LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
+          LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
+          TZ: 'Asia/Shanghai'
+        run: |
+          node cloud

@@ -7,6 +7,7 @@ var AV = require('leanengine');
 var storage = require('leancloud-storage');
 var moment = require('moment');
 var RSS = require('rss');
+
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
 require('./cloud');
 
@@ -82,39 +83,3 @@ app.get('/:current_day', function(req, res) {
 });
 
 module.exports = app;
-
-async function fetch_post() {
-  AV.init({
-    appId: process.env.LEANCLOUD_APP_ID,
-    appKey: process.env.LEANCLOUD_APP_KEY,
-  });
-  let today = moment().startOf('day');
-  let yesterday = moment().add(-1, 'd').startOf('day');
-  // console.log(today.toString(), yesterday.toString());
-  let q = new storage.Query('v2ex');
-  q.limit(1000);
-  q.greaterThanOrEqualTo('created', yesterday.unix());
-  q.lessThan('created', today.unix());
-  q.descending('replies');
-  let table = ['<table border=1>'];
-  table.push('<tr><th>Title</th><th>Body</th><th>Replies</th><th>Node</th><th>Created</th></tr>');
-  let results = await q.find();
-  for(let post of results) {
-    let o = {
-      node: post.get('node')['title'],
-      description: post.get('content_rendered'),
-      url: post.get('url'),
-      replies: post.get('replies'),
-      created: moment(post.get('created') * 1000).format('YYYY-MM-DD hh:mm:ss'),
-      title: post.get('title')
-    }
-    table.push(`<tr><td><a href="${o.url}">${o.title}</a></td><td>${o.description}</td><td>${o.replies}</td><td>${o.node}</td><td>${o.created}</td></tr>`);
-    // console.log(post);
-  }
-  table.push('</table>');
-  console.log(table.join(''));
-}
-
-if (require.main === module) {
-  fetch_post();
-}

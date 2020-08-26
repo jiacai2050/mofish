@@ -1,0 +1,25 @@
+<table border=1>
+<tr><th>Title</th><th>Replies</th><th>Node</th><th>Created</th></tr>
+<%  for(let post of posts) { %>
+<tr>
+    <td><a name="nav-<%= post.id %>" href="#body-<%= post.id %>"><%= post.title %></a></td>
+    <td><%= post.replies %></td>
+    <td><%= post.node %></td>
+    <td><%= post.created %></td>
+</tr>
+<%  }  %>
+
+</table>
+
+<ol>
+<%  for(let post of posts) { %>
+<li>
+    <h2><a name="body-<%= post.id %>" href="<%- post.url %>"><%= post.title %></a></h2>
+    <h4><a href="#nav-<%= post.id %>">Go Back</a></h4>
+    <div>
+    <%- post.description %>
+    </div>
+</li>
+<%  }  %>
+
+<ol>

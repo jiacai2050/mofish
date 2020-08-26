@@ -3,6 +3,7 @@ npm-debug.log
 start.sh
 .avoscloud
 .leancloud
+env.sh
 
 # VIM
 *~
