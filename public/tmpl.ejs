@@ -1,11 +1,10 @@
 <table border=1>
-<tr><th>Title</th><th>Replies</th><th>Node</th><th>Created</th></tr>
+<tr><th>Replies</th><th>Node</th><th>Title</th></tr>
 <%  for(let post of posts) { %>
 <tr>
-    <td><a name="nav-<%= post.id %>" href="#body-<%= post.id %>"><%= post.title %></a></td>
-    <td><%= post.replies %></td>
+    <td><a href="#body-<%= post.id %>"><%= post.replies %></a></td>
     <td><%= post.node %></td>
-    <td><%= post.created %></td>
+    <td><a name="nav-<%= post.id %>" href="<%- post.url %>"><%= post.title %></a></td>
 </tr>
 <%  }  %>
 
