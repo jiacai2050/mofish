@@ -41,6 +41,7 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: (${{env.REPORT_DATE}}) V2EX Hot Posts
           body: file://result.html
-          to: ${{ secrets.MAIL_TO }}
+          to: v2ex@groups.io,v2ex_hot_posts@googlegroups.com,v2ex_hot_posts@groups.163.com
+          # to: ${{ secrets.MAIL_TO }}
           from: GitHub Actions ${{github.repository}}
           content_type: text/html
