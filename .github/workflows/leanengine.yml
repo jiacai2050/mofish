@@ -1,3 +1,5 @@
+name: 'leanengine'
+
 on:
   push:
     branches: [ master ]

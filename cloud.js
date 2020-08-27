@@ -1,21 +1,43 @@
 const AV = require('leanengine');
-const _ = require('./init-lc');
 const storage = require('leancloud-storage');
 const rp = require('request-promise');
 const cheerio = require('cheerio')
+require('./init-lc');
 
-
-let url = 'https://vubvdkqx.api.lncld.net/1.1/classes/v2ex';
 let V2ex = storage.Object.extend('v2ex');
+
+async function insert_or_update(post) {
+  const query = new AV.Query('v2ex');
+  query.equalTo('url', post.url);
+  let ret = await query.first();
+  if (!!ret) {
+    console.log('update');
+    let id = ret.get('objectId');
+    const item = AV.Object.createWithoutData('v2ex', id);
+    delete post['id'];
+    delete post['url'];
+    item.set(post);
+    return await item.save({fetchWhenSave: true});
+  } else {
+    console.log('insert');
+    let v2ex = new V2ex();
+    v2ex.set(post);
+    return await v2ex.save({fetchWhenSave: true});
+  }
+}
 
 async function save_posts() {
   let body = await rp('https://www.v2ex.com/api/topics/hot.json');
   let hot_posts = JSON.parse(body);
   for(let post of hot_posts) {
-    let v2ex = new V2ex();
-    console.log(`${post.id}`);
-    v2ex.set(post);
-    v2ex.save();
+    try {
+      console.log(`begin save ${post.id}-${post.title}`);
+      let ret = await insert_or_update(post);
+      // console.log(ret.toJSON());
+      console.log(`done save ${ret.id}-${ret.get('title')}`);
+    } catch(e) {
+      console.error(e);
+    }
   }
 }
 
@@ -52,10 +74,10 @@ if (require.main === module) {
     } catch(e) {
       console.log(e);
     }
-    try {
-      await save_online();
-    } catch(e) {
-      console.log(e);
-    }
+    // try {
+    //   await save_online();
+    // } catch(e) {
+    //   console.log(e);
+    // }
   })();
 }

@@ -1,17 +1,21 @@
 # V2EX 热帖收藏夹
 
-本项目主要使用 [LeanCloud](https://leancloud.cn/) 存储与云引擎实现，浏览地址：
+本项目主要使用 [LeanCloud](https://leancloud.cn/) 存储实现，浏览地址：
 
-> http://v2ex.leanapp.cn/
+> https://liujiacai.gitee.io/v2ex/
 
-## 主要功能
+同时利用 GitHub Action，每天北京时间早 9 点，发送到以下邮件列表：
+- https://groups.io/g/v2ex/topics
+- https://groups.google.com/g/v2ex_hot_posts
 
-- 两个定时云函数收集数据，具体见 [cloud.js](./cloud.js)
-- 按天展示热帖
+## 数据源
+
+定期抓取
+- https://www.v2ex.com/api/topics/hot.json
 
 ## 注意⚠️
 
-为了防止重复抓取，需要将 v2ex 表的 id 字段设为唯一索引
+为了防止重复抓取，需要将 v2ex 表的 url 字段设为唯一索引
 
 ## 相关文档
 
