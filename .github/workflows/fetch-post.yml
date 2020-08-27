@@ -29,3 +29,9 @@ jobs:
           TZ: 'Asia/Shanghai'
         run: |
           node cloud
+      - shell: bash
+        env:
+          LEANCLOUD_APP_ID: ${{ secrets.US_LEANCLOUD_APP_ID }}
+          LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
+        run: |
+          node cloud
