@@ -17,12 +17,12 @@ async function insert_or_update(post) {
     delete post['id'];
     delete post['url'];
     item.set(post);
-    return await item.save({fetchWhenSave: true});
+    return await item.save(null, {fetchWhenSave: true});
   } else {
     console.log('insert');
     let v2ex = new V2ex();
     v2ex.set(post);
-    return await v2ex.save({fetchWhenSave: true});
+    return await v2ex.save(null, {fetchWhenSave: true});
   }
 }
 
@@ -74,10 +74,10 @@ if (require.main === module) {
     } catch(e) {
       console.log(e);
     }
-    // try {
-    //   await save_online();
-    // } catch(e) {
-    //   console.log(e);
-    // }
+    try {
+      await save_online();
+    } catch(e) {
+      console.log(e);
+    }
   })();
 }

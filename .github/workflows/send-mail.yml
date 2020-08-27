@@ -27,8 +27,8 @@ jobs:
           LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
           TZ: 'Asia/Shanghai'
-        run:
-          node robot | tee result.html
+        run: |
+          node mail.js result.html && cat result.html
       - name: 'Get Date'
         run: echo "::set-env name=REPORT_DATE::$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')"
       - name: 'Send mail'
