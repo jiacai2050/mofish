@@ -2,7 +2,7 @@ name: 'hacker-news'
 
 on:
   workflow_dispatch:
-  push:
+  # push:
   schedule:
     - cron: '15 6 * * *'
 

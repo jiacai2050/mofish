@@ -27,6 +27,7 @@ jobs:
           LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
           LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
+          GIT_SHA: ${{ github.sha }}
           TZ: 'Asia/Shanghai'
         run: |
           node mail.js result.html && cat result.html

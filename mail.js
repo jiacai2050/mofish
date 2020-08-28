@@ -6,6 +6,7 @@ const { Console } = require('console');
 
 const _ = require('./init-lc');
 const fileOpts = {'encoding': 'utf8'};
+const git_sha = process.env.GIT_SHA || 'master';
 
 var myArgs = process.argv.slice(2);
 const output = myArgs[0] || 'result.html';
@@ -41,7 +42,7 @@ async function fetch_post() {
     posts.push(o);
   }
   let tmpl = fs.readFileSync('./public/tmpl.ejs', fileOpts);
-  let body = ejs.render(tmpl, {posts: posts}, {});
+  let body = ejs.render(tmpl, {posts: posts, git_sha: git_sha}, {});
   console.log(body);
 }
 

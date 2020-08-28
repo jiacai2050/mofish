@@ -25,25 +25,40 @@ async function insert_or_update(post) {
   }
 }
 
+async function batchSave(posts) {
+  for (let batch of partition(posts, 200)) {
+    let posts = batch.map((post) => {
+      let table = new Table();
+      table.set(post);
+      return table;
+    });
+    try {
+      let ret = await AV.Object.saveAll(posts);
+      console.log(ret);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+}
+
 async function save_posts() {
   let body = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
   let ids = await body.json();
   body = await fetch('https://hacker-news.firebaseio.com/v0/beststories.json');
   ids = ids.concat(await body.json());
   ids = new Set(ids);
-  console.log(ids);
+  console.log(`ids length = ${ids.length}`);
+  let posts = [];
   for(let id of ids) {
     try {
       let post = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
       post = await post.json();
-      console.log(`begin save ${post.id}-${post.title}`);
-      let ret = await insert_or_update(post);
-      // console.log(ret.toJSON());
-      console.log(`done save ${ret.id}-${ret.get('title')}`);
+      posts.push(post);
     } catch(e) {
       console.error(e);
     }
   }
+  await batchSave(posts);
 }
 
 if (require.main === module) {
@@ -54,4 +69,9 @@ if (require.main === module) {
       console.log(e);
     }
   })();
+}
+
+// https://stackoverflow.com/a/26230409/2163429
+function partition(array, n) {
+  return array.length ? [array.splice(0, n)].concat(partition(array, n)) : [];
 }
