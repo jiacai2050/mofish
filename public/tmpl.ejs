@@ -1,10 +1,9 @@
 <table border=1>
-<tr><th>Replies</th><th>Node</th><th>Title</th></tr>
+<tr><th>Replies</th><th>Title</th></tr>
 <%  for(let post of posts) { %>
 <tr>
-    <td><a href="#body-<%= post.id %>"><%= post.replies %></a></td>
-    <td><a href="<%- post.node_url %>"><%= post.node %></a></td>
-    <td><a href="<%- post.url %>"><%= post.title %></a></td>
+    <td><a name="nav-<%- post.id %>" href="#body-<%= post.id %>"><%= post.replies %></a></td>
+    <td>[<a href="<%- post.node_url %>"><%= post.node %></a>]-<a href="<%- post.url %>"><%= post.title %></a></td>
 </tr>
 <%  }  %>
 
@@ -14,10 +13,16 @@
 <%  for(let post of posts) { %>
 <li>
     <h2><a href="<%- post.url %>"><%= post.title %></a></h2>
-    <h4>Posted By <a href="<%- post.author_url %>"><%= post.author %></a><img src="<%= post.author_image %>"/> at <%= post.created %> in <img src="<%= post.node_image %>"/><a name="body-<%- post.id %>"><%= post.node %></a>
+    <h4>
+    Posted By <a href="<%- post.author_url %>"><%= post.author %></a><img src="<%= post.author_image %>"/>
+    at <%= post.created %>
+    in <a href="<%- post.node_url %>"><%= post.node %></a><img src="<%= post.node_image %>"/> |
+    <a href="#nav-<%- post.id %>" name="body-<%- post.id %>">Go Back</a>
 </h4>
     <%- post.description %>
 </li>
 <%  }  %>
 
 <ol>
+
+<center>Built With ❤️  by <a href="https://github.com/jiacai2050/v2ex">jiacai2050/v2ex</a> </center>

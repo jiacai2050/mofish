@@ -43,5 +43,5 @@ jobs:
           body: file://result.html
           to: v2ex@groups.io,v2ex_hot_posts@googlegroups.com,v2ex_hot_posts@groups.163.com
           # to: ${{ secrets.MAIL_TO }}
-          from: GitHub Actions ${{github.repository}}
+          from: GitHub Actions
           content_type: text/html

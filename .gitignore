@@ -4,7 +4,7 @@ start.sh
 .avoscloud
 .leancloud
 env.sh
-
+result.html
 # VIM
 *~
 *.swp

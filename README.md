@@ -9,7 +9,7 @@
 同时利用 GitHub Action，每天北京时间早 9 点，发送到以下邮件列表：
 - https://groups.io/g/v2ex/topics （支持 RSS ）
 - https://groups.google.com/g/v2ex_hot_posts
-- <del>http://163.fm/83RePaVU （无历史记录）</del>
+- http://163.fm/83RePaVU （无历史记录）
 
 ## 数据源
 
