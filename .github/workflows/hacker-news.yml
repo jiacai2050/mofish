@@ -1,10 +1,10 @@
-name: 'fetch-posts'
+name: 'hacker-news'
 
 on:
   workflow_dispatch:
   push:
   schedule:
-    - cron: '5 */4 * * *'
+    - cron: '15 */6 * * *'
 
 jobs:
   fetch-posts:
@@ -31,7 +31,7 @@ jobs:
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
           TZ: 'Asia/Shanghai'
         run: |
-          node cloud
+          node hacker-news.js
       - name: fetch post US
         shell: bash
         env:
@@ -39,4 +39,4 @@ jobs:
           LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
         run: |
-          node cloud
+          node hacker-news.js

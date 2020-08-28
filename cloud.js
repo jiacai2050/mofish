@@ -1,6 +1,6 @@
 const AV = require('leanengine');
 const storage = require('leancloud-storage');
-const rp = require('request-promise');
+const fetch = require('node-fetch');
 const cheerio = require('cheerio')
 require('./init-lc');
 
@@ -27,8 +27,8 @@ async function insert_or_update(post) {
 }
 
 async function save_posts() {
-  let body = await rp('https://www.v2ex.com/api/topics/hot.json');
-  let hot_posts = JSON.parse(body);
+  let body = await fetch('https://www.v2ex.com/api/topics/hot.json');
+  let hot_posts = await body.json();
   for(let post of hot_posts) {
     try {
       console.log(`begin save ${post.id}-${post.title}`);
@@ -42,7 +42,8 @@ async function save_posts() {
 }
 
 async function save_online() {
-  let body = await rp('https://www.v2ex.com/');
+  let body = await fetch('https://www.v2ex.com/');
+  body = await body.text();
   let $ = cheerio.load(body, {decodeEntities: false});
   let html = $('div#Bottom div.content div.inner strong').html();
   let m = /(\d+) 人在线/.exec(html);
