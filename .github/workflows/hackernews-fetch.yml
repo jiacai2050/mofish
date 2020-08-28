@@ -1,4 +1,4 @@
-name: 'hacker-news'
+name: 'hackernews=fetch'
 
 on:
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
           TZ: 'Asia/Shanghai'
         run: |
-          node hacker-news.js
+          node actions/hacker-news/fetch.js
       - name: fetch post US
         shell: bash
         env:
@@ -39,4 +39,4 @@ jobs:
           LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
         run: |
-          node hacker-news.js
+          node actions/hacker-news/fetch.js

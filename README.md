@@ -1,6 +1,7 @@
 # V2EX 热帖收藏夹
 
-[![send-mail](https://github.com/jiacai2050/v2ex/workflows/send-mail/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Asend-mail) [![fetch-posts](https://github.com/jiacai2050/v2ex/workflows/fetch-posts/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Afetch-posts)
+[![v2ex-mail](https://github.com/jiacai2050/v2ex/workflows/v2ex-mail/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Av2ex-mail) [![v2ex-fetch](https://github.com/jiacai2050/v2ex/workflows/v2ex-fetch/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Av2ex-fetch)
+[![hackernews-fetch](https://github.com/jiacai2050/v2ex/workflows/hackernews-fetch/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Ahackernews-fetch)
 
 本项目定期采集 V2EX 站点的热帖，保存在 [LeanCloud](https://leancloud.cn/)，在线浏览地址：
 

@@ -1,4 +1,4 @@
-name: 'fetch-posts'
+name: 'v2ex-fetch'
 
 on:
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
           TZ: 'Asia/Shanghai'
         run: |
-          node cloud
+          node actions/v2ex/fetch.js
       - name: fetch post US
         shell: bash
         env:
@@ -39,4 +39,4 @@ jobs:
           LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
         run: |
-          node cloud
+          node actions/v2ex/fetch.js

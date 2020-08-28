@@ -1,4 +1,4 @@
-name: 'send-mail'
+name: 'v2ex-mail'
 
 on:
   workflow_dispatch:
@@ -30,7 +30,7 @@ jobs:
           GIT_SHA: ${{ github.sha }}
           TZ: 'Asia/Shanghai'
         run: |
-          node mail.js result.html && cat result.html
+          node actions/v2ex/mail.js result.html && cat result.html
       - name: 'Get Date'
         run: echo "::set-env name=REPORT_DATE::$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')"
       - name: 'Send mail'

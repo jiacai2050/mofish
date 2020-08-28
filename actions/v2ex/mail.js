@@ -1,22 +1,23 @@
+require('../../init-lc');
 const ejs = require('ejs');
 const fs = require('fs');
-const storage = require('leancloud-storage');
+const { Query } = require('leancloud-storage');
 const moment = require('moment');
 const { Console } = require('console');
+const { POST_TABLE_NAME, ONLINE_TABLE_NAME } = require('./common')
 
-const _ = require('./init-lc');
-const fileOpts = {'encoding': 'utf8'};
+const file_opts = {'encoding': 'utf8'};
 const git_sha = process.env.GIT_SHA || 'master';
 
-var myArgs = process.argv.slice(2);
+const myArgs = process.argv.slice(2);
 const output = myArgs[0] || 'result.html';
-const console = new Console(fs.createWriteStream(output, fileOpts));
+const file_console = new Console(fs.createWriteStream(output, file_opts));
 
 async function fetch_post() {
   let today = moment().startOf('day');
   let yesterday = moment().add(-1, 'd').startOf('day');
   // console.log(today.toString(), yesterday.toString());
-  let q = new storage.Query('v2ex');
+  let q = new Query(POST_TABLE_NAME);
   q.limit(1000);
   q.greaterThanOrEqualTo('created', yesterday.unix());
   q.lessThan('created', today.unix());
@@ -41,9 +42,9 @@ async function fetch_post() {
     }
     posts.push(o);
   }
-  let tmpl = fs.readFileSync('./public/tmpl.ejs', fileOpts);
+  let tmpl = fs.readFileSync(`${__dirname}/../../public/tmpl.ejs`, file_opts);
   let body = ejs.render(tmpl, {posts: posts, git_sha: git_sha}, {});
-  console.log(body);
+  file_console.log(body);
 }
 
 if (require.main === module) {
