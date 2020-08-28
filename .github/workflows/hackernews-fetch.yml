@@ -1,10 +1,10 @@
-name: 'hackernews=fetch'
+name: 'hackernews-fetch'
 
 on:
   workflow_dispatch:
-  # push:
+  push:
   schedule:
-    - cron: '15 6 * * *'
+    - cron: '15 */12 * * *'
 
 jobs:
   fetch-posts:
