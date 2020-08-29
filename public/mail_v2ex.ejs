@@ -1,28 +1,31 @@
-<h2>V2EX</h2>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+<caption><h2>V2EX</h2></caption>
 <tr><th>Replies</th><th>Title</th></tr>
 <%  for(let post of posts) { %>
 <tr>
-    <td><a name="nav-<%- post.id %>" href="#body-<%= post.id %>"><%= post.replies %></a></td>
-    <td>[<a href="<%- post.node_url %>"><%= post.node %></a>]-<a href="<%- post.url %>"><%= post.title %></a></td>
+    <td><%= post.replies %></td>
+    <td><p>[<a href="<%- post.node_url %>"><%= post.node %></a>]-<a href="<%- post.url %>"><%= post.title %></a></p></td>
 </tr>
 <%  }  %>
 </table>
-<ol>
-<%  for(let post of posts) { %>
-<li>
-    <h2><a href="<%- post.url %>"><%= post.title %></a></h2>
-    <h4>
-    Posted By <a href="<%- post.author_url %>"><%= post.author %></a><img src="<%= post.author_image %>"/>
-    at <%= post.created %>
-    in <a href="<%- post.node_url %>"><%= post.node %></a><img src="<%= post.node_image %>"/> |
-    <a href="#nav-<%- post.id %>" name="body-<%- post.id %>">Go Back</a>
-</h4>
-    <%- post.description %>
-</li>
-<%  }  %>
 
-</ol>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+<caption><h3>Contents</h3></caption>
+<%  for(let post of posts) { %>
+<tr>
+    <td>
+    <hr/>
+    <strong><a href="<%- post.url %>"><%= post.title %></a></strong>
+    <h5>
+    Posted By <a href="<%- post.author_url %>"><%= post.author %></a>
+    at <%= post.created %>
+    in <a href="<%- post.node_url %>"><%= post.node %></a>
+    </h5>
+    <%- post.description %>
+    </td>
+</tr>
+<%  }  %>
+</table>
 
 <% if (!!git_sha) { %>
 <center>

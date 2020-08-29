@@ -7,7 +7,7 @@ const juice = require('juice');
 const moment = require('moment');
 
 if (require.main === module) {
-  const file_opts = {'encoding': 'utf8', 'flags': 'a'};
+  const file_opts = {'encoding': 'utf8', 'flags': 'w'};
   const git_sha = process.env.GIT_SHA || 'master';
 
   const myArgs = process.argv.slice(2);
