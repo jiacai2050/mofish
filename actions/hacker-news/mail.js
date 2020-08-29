@@ -6,13 +6,6 @@ const moment = require('moment');
 const { Console } = require('console');
 const { POST_TABLE_NAME, ONLINE_TABLE_NAME } = require('./common')
 
-const file_opts = {'encoding': 'utf8', 'flags': 'a'};
-const git_sha = process.env.GIT_SHA || 'master';
-
-const myArgs = process.argv.slice(2);
-const output = myArgs[0] || 'hackernews_result.html';
-const file_console = new Console(fs.createWriteStream(output, file_opts));
-
 async function fetch_post() {
   let today = moment().startOf('day');
   let yesterday = moment().add(-1, 'd').startOf('day');
@@ -30,11 +23,24 @@ async function fetch_post() {
     o['created'] = moment(post.get('time') * 1000).format('YYYY-MM-DD hh:mm:ss'),
     posts.push(o);
   }
-  let tmpl = fs.readFileSync(`${__dirname}/../../public/mail_hackernews.ejs`, file_opts);
-  let body = ejs.render(tmpl, {posts: posts, git_sha: git_sha}, {});
-  file_console.log(body);
+  return posts;
 }
 
 if (require.main === module) {
-  fetch_post();
+  const file_opts = {'encoding': 'utf8', 'flags': 'a'};
+  const git_sha = process.env.GIT_SHA || 'master';
+
+  const myArgs = process.argv.slice(2);
+  const output = myArgs[0] || 'hackernews_result.html';
+  const file_console = new Console(fs.createWriteStream(output, file_opts));
+
+
+  (async () => {
+    let posts = await fetch_post();
+    let tmpl = fs.readFileSync(`${__dirname}/../../public/mail_hackernews.ejs`, file_opts);
+    let body = ejs.render(tmpl, {posts: posts, git_sha: git_sha}, {});
+    file_console.log(body);
+  })()
 }
+
+module.exports = { fetch_post };

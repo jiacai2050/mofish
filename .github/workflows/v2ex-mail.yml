@@ -30,8 +30,9 @@ jobs:
           GIT_SHA: ${{ github.sha }}
           TZ: 'Asia/Shanghai'
         run: |
-          node actions/hacker-news/mail.js result.html
-          node actions/v2ex/mail.js result.html
+          # node actions/hacker-news/mail.js result.html
+          # node actions/v2ex/mail.js result.html
+          node actions/mail.js result.html
           cat result.html
       - name: 'Get Date'
         run: echo "::set-env name=REPORT_DATE::$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')"
