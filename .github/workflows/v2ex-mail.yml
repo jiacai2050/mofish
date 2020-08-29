@@ -30,7 +30,9 @@ jobs:
           GIT_SHA: ${{ github.sha }}
           TZ: 'Asia/Shanghai'
         run: |
-          node actions/v2ex/mail.js result.html && cat result.html
+          node actions/hacker-news/mail.js result.html
+          node actions/v2ex/mail.js result.html
+          cat result.html
       - name: 'Get Date'
         run: echo "::set-env name=REPORT_DATE::$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')"
       - name: 'Send mail'
@@ -40,7 +42,7 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: (${{env.REPORT_DATE}}) V2EX Hot Posts
+          subject: (${{env.REPORT_DATE}}) Hot Posts
           body: file://result.html
           to: v2ex@groups.io,v2ex_hot_posts@googlegroups.com,v2ex_hot_posts@groups.163.com
           # to: ${{ secrets.MAIL_TO }}

@@ -1,0 +1,16 @@
+<center>
+<h1>Hacker News</h1>
+<table border="1">
+<tr><th>Score</th><th>Title</th><th>Created</th></tr>
+<%  for(let post of posts) { %>
+<tr>
+    <td><a href="https://news.ycombinator.com/item?id=<%- post.id %>"><%= post.score %></a></td>
+    <td><a href="<%- post.url %>"><%= post.title %></a></td>
+    <td><%= post.created %></td>
+</tr>
+<%  }  %>
+
+</table>
+
+Built With ❤️  by <a href="https://github.com/jiacai2050/v2ex/tree/<%= git_sha %>">jiacai2050/v2ex</a>
+</center>
