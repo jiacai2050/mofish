@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <title>V2EX 热帖收藏夹</title>
+    <title> 热帖收藏夹</title>
     <meta charset="utf-8">
-    <meta name="description" content="V2EX 热帖收藏夹">
+    <meta name="description" content="热帖收藏夹">
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <link rel="shortcut icon" href="https://v2ex.com/static/img/icon_rayps_64.png" type="image/png" />
     <link rel="apple-touch-icon" href="https://v2ex.com/static/apple-touch-icon.png" />
@@ -16,24 +16,41 @@
   </head>
 
   <body>
-    <table id="content" border="1" align="center">
-      <tr>
-        <th>回复数</th>
-        <th>标题</th>
-      </tr>
-      <caption>
-        <span id="current_day"></span> V2EX Top Post</caption>
-    </table>
-    <table id="page" border="0" align="center">
-      <tr>
-        <td><a href="" id="prev">前一天</a></td>
-        <td>&nbsp;<a href="" id="next">后一天</a></td>
-      </tr>
-    </table>
-    <footer>
-      <p>2020 &copy; <a target="_blank" href="https://github.com/jiacai2050/v2ex"> https://github.com/jiacai2050/v2ex</a>. All Rights Reserved. Powered by
-        <a target="_blank" href="https://leancloud.cn/">LeanCloud</a>.</p>
-    </footer>
+
+    <div align="center">
+      <h2 id="current_day" ></h2>
+      <details open>
+        <summary><h3>V2EX</h3></summary>
+        <table id="v2ex_table">
+          <tr>
+            <th>回复数</th>
+            <th>标题</th>
+          </tr>
+        </table>
+      </details>
+
+      <details open>
+        <summary><h3>Hacker News</h3></summary>
+        <table id="hackernews_table">
+          <tr>
+            <th>分数</th>
+            <th>标题</th>
+          </tr>
+          <caption> </caption>
+        </table>
+      </details>
+
+      <table id="page" border="0">
+        <tr>
+          <td><a href="" id="prev">前一天</a></td>
+          <td>&nbsp;<a href="" id="next">后一天</a></td>
+        </tr>
+      </table>
+      <footer>
+        <p>2020 &copy; <a target="_blank" href="https://github.com/jiacai2050/v2ex"> https://github.com/jiacai2050/v2ex</a>. All Rights Reserved. Powered by
+          <a target="_blank" href="https://leancloud.cn/">LeanCloud</a>.</p>
+      </footer>
+    </div>
   </body>
   <script>
     var _hmt = _hmt || [];
