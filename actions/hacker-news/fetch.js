@@ -5,7 +5,7 @@ const { POST_TABLE_NAME } = require('./common')
 
 const Table = Object.extend(POST_TABLE_NAME);
 
-async function batchSave(posts) {
+async function batch_save(posts) {
   for (let batch of partition(posts, 200)) {
     let posts = batch.map((post) => {
       let table = new Table();
@@ -21,7 +21,7 @@ async function batchSave(posts) {
   }
 }
 
-async function save_posts() {
+async function fetch_posts() {
   let top_ids = [];
   try {
     let body = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
@@ -53,7 +53,10 @@ async function save_posts() {
       console.error(e);
     }
   }
-  await batchSave(posts);
+}
+
+async function save_posts() {
+    await batch_save(await fetch_posts());
 }
 
 if (require.main === module) {
@@ -70,3 +73,5 @@ if (require.main === module) {
 function partition(array, n) {
   return array.length ? [array.splice(0, n)].concat(partition(array, n)) : [];
 }
+
+module.exports = { fetch_posts };

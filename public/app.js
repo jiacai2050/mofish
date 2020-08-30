@@ -11,7 +11,7 @@
       let posts = results;
       console.log(posts);
       if (posts.length < 1) {
-        alert(`${current_day}数据没有采集，请换一天浏览。`);
+        alert(`V2EX ${current_day} 数据没有采集`);
       } else {
         for (let p of posts) {
           console.log(p);
@@ -37,7 +37,7 @@
       let posts = results;
       console.log(posts);
       if (posts.length < 1) {
-        alert(`hackernews ${current_day}数据没有采集，请换一天浏览。`);
+        alert(`HackerNews ${current_day} 数据没有采集`);
       } else {
         for (let p of posts) {
           console.log(p);

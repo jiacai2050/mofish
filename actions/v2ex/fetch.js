@@ -4,7 +4,6 @@ const fetch = require('node-fetch');
 const cheerio = require('cheerio')
 const { POST_TABLE_NAME, ONLINE_TABLE_NAME } = require('./common');
 
-console.log(POST_TABLE_NAME);
 const V2ex = Object.extend(POST_TABLE_NAME);
 const OnlineStat = Object.extend(ONLINE_TABLE_NAME);
 
@@ -29,9 +28,8 @@ async function insert_or_update(post) {
 }
 
 async function save_posts() {
-  let body = await fetch('https://www.v2ex.com/api/topics/hot.json');
-  let hot_posts = await body.json();
-  for(let post of hot_posts) {
+  let posts = await fetch_posts();
+  for(let post of posts) {
     try {
       console.log(`begin save ${post.id}-${post.title}`);
       let ret = await insert_or_update(post);
@@ -41,6 +39,11 @@ async function save_posts() {
       console.error(e);
     }
   }
+}
+
+async function fetch_posts() {
+  let body = await fetch('https://www.v2ex.com/api/topics/hot.json');
+  return await body.json();
 }
 
 async function save_online() {
@@ -58,7 +61,7 @@ async function save_online() {
   }
 }
 
-module.exports = { save_online, save_posts };
+module.exports = { save_online, save_posts, fetch_posts };
 
 if (require.main === module) {
   (async function() {
