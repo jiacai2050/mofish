@@ -18,7 +18,8 @@
     "leanengine": "^3.7.0",
     "moment": "^2.27.0",
     "node-fetch": "^2.6.0",
-    "rss": "^1.2.2"
+    "rss": "^1.2.2",
+    "yargs": "^15.4.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"

@@ -335,6 +335,7 @@
   <body class="">
     <span class="preheader"><%= data_time %> Hot Posts</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+    <caption><h2><%= data_time %> Hot Posts</h2></caption>
       <tr>
         <td>&nbsp;</td>
         <td class="container">
@@ -364,7 +365,7 @@
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    Built With ❤️  by <a href="https://github.com/jiacai2050/v2ex/tree/<%= git_sha %>">jiacai2050/v2ex</a>
+                    Built With ❤️  by <a href="https://github.com/<%- github_repo %>/tree/<%= github_sha %>"><%- github_repo %></a>
                   </td>
                 </tr>
               </table>

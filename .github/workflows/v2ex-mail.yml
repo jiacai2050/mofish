@@ -22,20 +22,19 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm i
+      - name: 'Set Args'
+        run: |
+            echo "::set-env name=TZ::Asia/Shanghai"
+            echo "::set-env name=HTML_OUTPUT::result.html"
+            echo "::set-env name=POST_DATE::$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')"
       - shell: bash
         env:
           LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
           LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
-          GIT_SHA: ${{ github.sha }}
-          TZ: 'Asia/Shanghai'
         run: |
-          # node actions/hacker-news/mail.js result.html
-          # node actions/v2ex/mail.js result.html
-          node actions/mail.js result.html
-          cat result.html
-      - name: 'Get Date'
-        run: echo "::set-env name=REPORT_DATE::$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')"
+          node actions/mail.js --day ${{ env.POST_DATE }} --output ${{ env.HTML_OUTPUT }}
+          cat ${{ env.HTML_OUTPUT }}
       - name: 'Send mail'
         uses: dawidd6/action-send-mail@master
         with:
@@ -43,8 +42,8 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: (${{env.REPORT_DATE}}) Hot Posts
-          body: file://result.html
+          subject: (${{env.POST_DATE}}) Hot Posts
+          body: file://${{ env.HTML_OUTPUT }}
           to: v2ex@groups.io,v2ex_hot_posts@googlegroups.com,v2ex_hot_posts@groups.163.com
           # to: ${{ secrets.MAIL_TO }}
           from: GitHub Actions
