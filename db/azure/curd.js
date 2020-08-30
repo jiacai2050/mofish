@@ -52,18 +52,29 @@ async function save_posts(v2ex_posts, hn_posts) {
     }
   }
 
+  await sleep(3000);
+
   if (hn_posts.length > 0) {
     const collection = db.collection(HN_TABLE_NAME);
-    try {
-      const ret = await collection.insertMany(hn_posts);
-      console.log(ret);
-    } catch(e) {
-      console.error(e);
+    for(let batch of partition(hn_posts, 50)) {
+      try {
+        const ret = await collection.insertMany(batch);
+        console.log(ret);
+      } catch(e) {
+        console.error(e);
+      } finally {
+        await sleep(5000);
+      }
     }
   }
 
   client.close();
+}
 
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 if(require.main === module) {
@@ -72,10 +83,21 @@ if(require.main === module) {
     case "index":
       await index_posts();
       break;
+    case "sleep":
+      console.log(new Date());
+      await sleep(5000);
+      console.log(new Date());
+      break;
     default:
       let v2ex_posts = await v2ex.fetch_posts();
       let hn_posts = await hn.fetch_posts();
       await save_posts(v2ex_posts, hn_posts);
     }
   })();
+}
+
+
+// https://stackoverflow.com/a/26230409/2163429
+function partition(array, n) {
+  return array.length ? [array.splice(0, n)].concat(partition(array, n)) : [];
 }
