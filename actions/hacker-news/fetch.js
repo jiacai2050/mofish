@@ -1,4 +1,4 @@
-require('../../init-lc');
+require('../../dep');
 const { Object } = require('leanengine');
 const fetch = require('node-fetch');
 const { POST_TABLE_NAME } = require('./common')

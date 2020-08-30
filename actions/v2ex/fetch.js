@@ -1,4 +1,4 @@
-require('../../init-lc');
+require('../../dep');
 const { Object, Query } = require('leanengine');
 const fetch = require('node-fetch');
 const cheerio = require('cheerio')

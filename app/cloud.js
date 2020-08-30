@@ -1,5 +1,5 @@
 const { Cloud } = require('leanengine');
-const {save_online, save_posts} = require('./actions/v2ex/fetch');
+const {save_online, save_posts} = require('../actions/v2ex/fetch');
 
 Cloud.define('v2ex', (req) => {
   save_posts();

@@ -1,4 +1,4 @@
-name: 'v2ex-mail'
+name: 'newsletter'
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
           LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
         run: |
-          node actions/mail.js --day ${{ env.POST_DATE }} --output ${{ env.HTML_OUTPUT }}
+          node actions/newsletter.js --day ${{ env.POST_DATE }} --output ${{ env.HTML_OUTPUT }}
           cat ${{ env.HTML_OUTPUT }}
       - name: 'Send mail'
         uses: dawidd6/action-send-mail@master

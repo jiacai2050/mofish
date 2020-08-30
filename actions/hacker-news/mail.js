@@ -1,4 +1,4 @@
-require('../../init-lc');
+require('../../dep');
 const ejs = require('ejs');
 const fs = require('fs');
 const { Query } = require('leancloud-storage');
