@@ -53,6 +53,7 @@ async function fetch_posts() {
       console.error(e);
     }
   }
+  return posts;
 }
 
 async function save_posts() {

@@ -33,4 +33,4 @@ jobs:
           COSMOS_CONNECTION_URI: ${{ secrets.COSMOS_CONNECTION_URI }}
           TZ: 'Asia/Shanghai'
         run: |
-          node db/azure/curd.js
+          node db/azure/curd.js --action fetch
