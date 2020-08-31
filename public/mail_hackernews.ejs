@@ -1,11 +1,21 @@
 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
 <caption><h2>Hacker News</h2></caption>
-<tr><th>Score</th><th>Title</th></tr>
 <%  for(let post of posts) { %>
 <tr>
-    <td><a href="https://news.ycombinator.com/item?id=<%- post.id %>"><%= post.score %></a></td>
-    <td><p><a href="<%- post.url %>"><%= post.title %></a></p></td>
+    <td>
+    <strong><a href="<%- post.url %>"><%= post.title %></a></strong>
+    <div class="footer">
+    <p>
+    <%= post.score %> points by <a href="https://news.ycombinator.com/user?id=<%- post.by %>"><%= post.by %></a>
+    at <%= post.created %> |
+    <a href="https://news.ycombinator.com/item?id=<%= post.id %>"><%= post.descendants %> comments</a>
+    </p>
+    <hr/>
+    </div>
+
+    </td>
 </tr>
+
 <%  }  %>
 
 </table>

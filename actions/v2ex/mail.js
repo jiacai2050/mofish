@@ -24,7 +24,7 @@ async function fetch_post(start_ts, end_ts) {
       description: post.get('content_rendered'),
       url: post.get('url'),
       replies: post.get('replies'),
-      created: moment(post.get('created') * 1000).format('YYYY-MM-DD hh:mm:ss'),
+      created: moment(post.get('created') * 1000).format('YYYY-MM-DD'),
       title: post.get('title'),
       author: post.get('member')['username'],
       author_url: post.get('member')['url'],

@@ -1,27 +1,20 @@
 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
 <caption><h2>V2EX</h2></caption>
-<tr><th>Replies</th><th>Title</th></tr>
-<%  for(let post of posts) { %>
-<tr>
-    <td><%= post.replies %></td>
-    <td><p>[<a href="<%- post.node_url %>"><%= post.node %></a>]-<a href="<%- post.url %>"><%= post.title %></a></p></td>
-</tr>
-<%  }  %>
-</table>
-
-<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-<caption><h3>Contents</h3></caption>
 <%  for(let post of posts) { %>
 <tr>
     <td>
     <hr/>
     <strong><a href="<%- post.url %>"><%= post.title %></a></strong>
-    <h5>
-    Posted By <a href="<%- post.author_url %>"><%= post.author %></a>
+    <div class="footer">
+    <p>
+    <%= post.replies %> comments by <a href="<%- post.author_url %>"><%= post.author %></a>
     at <%= post.created %>
     in <a href="<%- post.node_url %>"><%= post.node %></a>
-    </h5>
+    </p>
+    </div>
+    <details>
     <%- post.description %>
+    </details>
     </td>
 </tr>
 <%  }  %>
