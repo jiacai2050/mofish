@@ -4,7 +4,12 @@
 <tr>
     <td>
     <hr/>
+    <details>
+    <summary>
     <strong><a href="<%- post.url %>"><%= post.title %></a></strong>
+    </summary>
+        <%- post.description %>
+    </details>
     <div class="footer">
     <p>
     <%= post.replies %> comments by <a href="<%- post.author_url %>"><%= post.author %></a>
@@ -12,9 +17,6 @@
     in <a href="<%- post.node_url %>"><%= post.node %></a>
     </p>
     </div>
-    <details>
-    <%- post.description %>
-    </details>
     </td>
 </tr>
 <%  }  %>
