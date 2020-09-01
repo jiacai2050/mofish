@@ -17,7 +17,7 @@ async function fetch_post(start_ts, end_ts) {
   let posts = [];
   for(let post of results) {
     let o = post.toJSON();
-    o['created'] = moment(post.get('time') * 1000).format('hh:mm:ss'),
+    o['created'] = moment(post.get('time') * 1000).format('HH:mm:ss'),
     posts.push(o);
   }
   return posts;
