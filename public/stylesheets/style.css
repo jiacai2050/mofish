@@ -1,7 +1,27 @@
 body {
-    background: #fff;
-    font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  color: #666;
+  background-color: #fff;
+}
+
+body.dark-theme {
+  color: #eee;
+  background-color: #121212;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* defaults to dark theme */
+  body {
+    color: #eee;
+    background-color: #121212;
+  }
+  body.light-theme {
     color: #666;
+    background-color: #fff;
+  }
+}
+
+* {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 table {
@@ -16,7 +36,6 @@ th {
 
 td {
     padding: 15px 0;
-    border-top: 1px solid #ddd;
 }
 
 th:first-child,
@@ -29,7 +48,7 @@ a,
 a:visited,
 a:active,
 a:link {
-    color: #666;
+    color: inherit;
     text-decoration: none;
 }
 
@@ -40,7 +59,6 @@ a:hover {
 footer {
     text-align: center;
     font-size: 11px;
-    color: #ccc;
     /*position: absolute;*/
     right: 0;
     bottom: 0;
@@ -50,4 +68,10 @@ footer {
 
 footer a {
     color: inherit;
+}
+
+button#btn-toggle {
+    position: fixed; /* or position: absolute; */
+    top: 5;
+    right: 5;
 }

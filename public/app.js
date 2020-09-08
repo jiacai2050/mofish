@@ -51,6 +51,33 @@
     });
   }
 
+  function conf_dark_mode($) {
+    const btn = $("#btn-toggle");
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const currentTheme = localStorage.getItem("theme");
+    if (currentTheme == "dark") {
+      document.body.classList.toggle("dark-theme");
+    } else if (currentTheme == "light") {
+      document.body.classList.toggle("light-theme");
+    }
+
+    btn.click(function () {
+      if (prefersDarkScheme.matches) {
+        document.body.classList.toggle("light-theme");
+        var theme = document.body.classList.contains("light-theme")
+            ? "light"
+            : "dark";
+      } else {
+        document.body.classList.toggle("dark-theme");
+        var theme = document.body.classList.contains("dark-theme")
+            ? "dark"
+            : "light";
+      }
+      localStorage.setItem("theme", theme);
+    });
+
+  }
   var APP_ID = 'vUbVDkqX7D3l5nlGrMB2YNga-gzGzoHsz';
   var APP_KEY = 'hSeyI7bPX7rENUHyCzNDuyK8';
 
@@ -78,6 +105,7 @@
   const KEY_J = 106;
   const KEY_K = 107;
   window.onload = () => {
+    conf_dark_mode(jQuery);
     let current_day_e = document.getElementById("current_day");
     current_day_e.innerHTML = current_day;
     current_day_e.onclick = function(e) {
