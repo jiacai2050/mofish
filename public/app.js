@@ -14,7 +14,7 @@
         alert(`V2EX ${current_day} 数据没有采集`);
       } else {
         for (let p of posts) {
-          console.log(p);
+          // console.log(p);
           p = p.attributes;
           table.append(`<tr><td>${p['replies']}</td><td><a href='${p.url}'>${p['title']}</a></td></tr`);
         }
@@ -51,33 +51,49 @@
     });
   }
 
-  function conf_dark_mode($) {
-    const btn = $("#btn-toggle");
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+  const theme_key = 'hot-post-theme';
+  let current_theme = localStorage.getItem(theme_key);
 
-    const currentTheme = localStorage.getItem("theme");
-    if (currentTheme == "dark") {
-      document.body.classList.toggle("dark-theme");
-    } else if (currentTheme == "light") {
-      document.body.classList.toggle("light-theme");
+  function conf_dark_mode($) {
+    // https://github.com/darkreader/darkreader
+    if (current_theme == "dark") {
+      DarkReader.enable({
+        brightness: 100,
+        contrast: 90,
+        sepia: 10
+      });
+    } else if (current_theme == "light") {
+    } else {
+      DarkReader.auto({
+        brightness: 100,
+        contrast: 90,
+        sepia: 10
+      });
     }
 
-    btn.click(function () {
-      if (prefersDarkScheme.matches) {
-        document.body.classList.toggle("light-theme");
-        var theme = document.body.classList.contains("light-theme")
-            ? "light"
-            : "dark";
+    $("#btn-toggle").click(()=>{
+      let next_theme = '';
+      if(!!current_theme) {
+        next_theme = current_theme === 'light' ? 'dark': 'light';
       } else {
-        document.body.classList.toggle("dark-theme");
-        var theme = document.body.classList.contains("dark-theme")
-            ? "dark"
-            : "light";
+        DarkReader.auto(false);
+        next_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? 'light': 'dark'
       }
-      localStorage.setItem("theme", theme);
+      if (next_theme == 'dark') {
+        DarkReader.enable({
+          brightness: 100,
+          contrast: 90,
+          sepia: 10
+        });
+      } else {
+        DarkReader.disable();
+      }
+      current_theme = next_theme;
+      console.log(next_theme);
+      localStorage.setItem(theme_key, next_theme);
     });
-
   }
+
   var APP_ID = 'vUbVDkqX7D3l5nlGrMB2YNga-gzGzoHsz';
   var APP_KEY = 'hSeyI7bPX7rENUHyCzNDuyK8';
 
