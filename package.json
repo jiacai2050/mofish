@@ -18,7 +18,7 @@
     "leanengine": "^3.7.0",
     "moment": "^2.27.0",
     "mongodb": "^3.6.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "rss": "^1.2.2",
     "yargs": "^15.4.1"
   },
