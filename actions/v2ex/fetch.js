@@ -1,12 +1,15 @@
 require('../../dep');
 const { Object, Query } = require('leanengine');
 const fetch = require('node-fetch');
-const cheerio = require('cheerio')
+const cheerio = require('cheerio');
 const { POST_TABLE_NAME, ONLINE_TABLE_NAME } = require('./common');
 
 const V2ex = Object.extend(POST_TABLE_NAME);
 const OnlineStat = Object.extend(ONLINE_TABLE_NAME);
 
+const fetch_opts = {
+  'timeout': 10 * 1000, // 10s
+};
 async function insert_or_update(post) {
   const query = new Query(POST_TABLE_NAME);
   query.equalTo('url', post.url);
@@ -42,12 +45,12 @@ async function save_posts() {
 }
 
 async function fetch_posts() {
-  let body = await fetch('https://www.v2ex.com/api/topics/hot.json');
+  let body = await fetch('https://www.v2ex.com/api/topics/hot.json', fetch_opts);
   return await body.json();
 }
 
 async function save_online() {
-  let body = await fetch('https://www.v2ex.com/');
+  let body = await fetch('https://www.v2ex.com/', fetch_opts);
   body = await body.text();
   let $ = cheerio.load(body, {decodeEntities: false});
   let html = $('div#Bottom div.content div.inner strong').html();

@@ -24,9 +24,9 @@ jobs:
       - run: npm i
       - name: 'Set Args'
         run: |
-            echo "::set-env name=TZ::Asia/Shanghai"
-            echo "::set-env name=HTML_OUTPUT::result.html"
-            echo "::set-env name=POST_DATE::$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')"
+            echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
+            echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
+            echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
       - shell: bash
         env:
           LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
