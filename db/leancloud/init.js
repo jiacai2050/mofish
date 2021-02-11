@@ -7,6 +7,7 @@ AV.init({
 });
 
 AV.Cloud.useMasterKey();
+AV.setRequestTimeout(5000); // 5s
 
 // https://stackoverflow.com/a/47296370/2163429
 ['log', 'warn', 'error'].forEach((methodName) => {

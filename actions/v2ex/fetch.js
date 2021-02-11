@@ -18,8 +18,8 @@ async function insert_or_update(post) {
     console.log('update');
     let id = ret.get('objectId');
     const item = Object.createWithoutData(POST_TABLE_NAME, id);
-    delete post['id'];
-    delete post['url'];
+    delete post.id;
+    delete post.url;
     item.set(post);
     return await item.save(null, {fetchWhenSave: true});
   } else {
