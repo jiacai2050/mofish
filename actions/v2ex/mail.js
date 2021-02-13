@@ -15,7 +15,7 @@ async function fetch_post(start_ts, end_ts) {
 
   let results = await q.find();
   let posts = [];
-  for(let post of results) {
+  for (let post of results) {
     let o = {
       id: post.get('id'),
       node: post.get('node')['title'],
@@ -36,7 +36,7 @@ async function fetch_post(start_ts, end_ts) {
 }
 
 async function main() {
-  const file_opts = {'encoding': 'utf8', 'flags': 'a'};
+  const file_opts = { 'encoding': 'utf8', 'flags': 'a' };
   const github_sha = process.env.GITHUB_SHA || 'master';
   const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/v2ex';
 

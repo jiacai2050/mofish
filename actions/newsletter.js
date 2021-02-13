@@ -5,11 +5,11 @@ const hn = require('./hacker-news/mail');
 const v2ex = require('./v2ex/mail');
 const juice = require('juice');
 const moment = require('moment');
-const {argv} = require('yargs');
+const { argv } = require('yargs');
 
 const github_sha = process.env.GITHUB_SHA || 'master';
 const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/v2ex';
-const file_opts = {'encoding': 'utf8', 'flags': 'w'};
+const file_opts = { 'encoding': 'utf8', 'flags': 'w' };
 
 
 async function main() {
@@ -22,7 +22,7 @@ async function main() {
   const day_str = day.format('YYYY-MM-DD');
   const start_ts = day.unix();
   const end_ts = day.add(1, 'd').unix();
-  console.log(output, start_ts, end_ts);
+  console.log(output, start_ts, end_ts)
 
   const file_console = new Console(fs.createWriteStream(output, file_opts));
 
@@ -36,7 +36,7 @@ async function main() {
     github_sha: github_sha,
     github_repo: github_repo,
     data_time: day_str,
-  }, {views: [`${__dirname}/../public`]});
+  }, { views: [`${__dirname}/../public`] });
   file_console.log(juice(body));
 }
 

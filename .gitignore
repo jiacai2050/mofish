@@ -8,3 +8,4 @@ result.html
 # VIM
 *~
 *.swp
+.log
