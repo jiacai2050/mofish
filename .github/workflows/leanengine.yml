@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
     - name: Deploy to LeanEngine US
       uses: enflo/curl-action@v1.2
