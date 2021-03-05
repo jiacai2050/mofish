@@ -22,12 +22,22 @@ async function main() {
   const day_str = day.format('YYYY-MM-DD');
   const start_ts = day.unix();
   const end_ts = day.add(1, 'd').unix();
-  console.log(output, start_ts, end_ts)
+  console.log(output, start_ts, end_ts);
 
   const file_console = new Console(fs.createWriteStream(output, file_opts));
 
-  let hn_posts = await hn.fetch_post(start_ts, end_ts);
-  let v2ex_posts = await v2ex.fetch_post(start_ts, end_ts);
+  let hn_posts = [];
+  try {
+    hn_posts = await hn.fetch_post(start_ts, end_ts);
+  } catch (e) {
+    console.log(`fetch hn post failed: ${e}`);
+  }
+  let v2ex_posts = [];
+  try {
+    v2ex_posts = await v2ex.fetch_post(start_ts, end_ts);
+  } catch (e) {
+    console.log(`fetch v2ex post failed: ${e}`);
+  }
 
   let tmpl = fs.readFileSync(`${__dirname}/../public/mail.ejs`, file_opts);
   let body = ejs.render(tmpl, {
