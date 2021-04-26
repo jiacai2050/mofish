@@ -27,6 +27,7 @@ jobs:
         run: |
             echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
             echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
+            echo "TEXT_OUTPUT=result.txt" >> $GITHUB_ENV
             echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
       - shell: bash
         env:
@@ -34,18 +35,19 @@ jobs:
           LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
           LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
         run: |
-          node actions/newsletter.js --day ${{ env.POST_DATE }} --output ${{ env.HTML_OUTPUT }}
+          node actions/newsletter.js --day ${{ env.POST_DATE }} --htmloutput ${{ env.HTML_OUTPUT }} --textoutput ${{ env.TEXT_OUTPUT }}
           cat ${{ env.HTML_OUTPUT }}
+          cat ${{ env.TEXT_OUTPUT }}
       - name: 'Send mail'
-        uses: dawidd6/action-send-mail@master
+        uses: dawidd6/action-send-mail@v3.0.0
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: (${{env.POST_DATE}}) Hot Posts
-          body: file://${{ env.HTML_OUTPUT }}
+          body: file://${{ env.TEXT_OUTPUT }}
+          html_body: file://${{ env.HTML_OUTPUT }}
           to: v2ex@groups.io,v2ex_hot_posts@googlegroups.com,v2ex_hot_posts@groups.163.com
           # to: ${{ secrets.MAIL_TO }}
           from: GitHub Actions
-          content_type: text/html

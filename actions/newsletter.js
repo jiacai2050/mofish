@@ -13,7 +13,8 @@ const file_opts = { 'encoding': 'utf8', 'flags': 'w' };
 
 
 async function main() {
-  const output = argv.output || 'result.html';
+  const html_file = argv.htmloutput || 'html-part.html';
+  const text_file = argv.textoutput || 'text-part.txt';
   let day = argv.day || moment().add(-1, 'd').startOf('day');
   if (typeof day === 'number') {
     day = moment(day + '').startOf('day');
@@ -22,9 +23,10 @@ async function main() {
   const day_str = day.format('YYYY-MM-DD');
   const start_ts = day.unix();
   const end_ts = day.add(1, 'd').unix();
-  console.log(output, start_ts, end_ts);
+  console.log(html_file, start_ts, end_ts);
 
-  const file_console = new Console(fs.createWriteStream(output, file_opts));
+  const html_writer = new Console(fs.createWriteStream(html_file, file_opts));
+  const text_writer = new Console(fs.createWriteStream(text_file, file_opts));
 
   let hn_posts = [];
   try {
@@ -39,15 +41,20 @@ async function main() {
     console.log(`fetch v2ex post failed: ${e}`);
   }
 
-  let tmpl = fs.readFileSync(`${__dirname}/../public/mail.ejs`, file_opts);
-  let body = ejs.render(tmpl, {
-    hn_posts: hn_posts,
-    v2ex_posts: v2ex_posts,
-    github_sha: github_sha,
-    github_repo: github_repo,
-    data_time: day_str,
-  }, { views: [`${__dirname}/../public`] });
-  file_console.log(juice(body));
+  for (let [tmpl_file, writer] of [
+    ["html_mail.ejs", html_writer],
+    ["text_mail.ejs", text_writer]
+  ]) {
+    let tmpl = fs.readFileSync(`${__dirname}/../public/${tmpl_file}`, file_opts);
+    let body = ejs.render(tmpl, {
+      hn_posts: hn_posts,
+      v2ex_posts: v2ex_posts,
+      github_sha: github_sha,
+      github_repo: github_repo,
+      data_time: day_str,
+    }, { views: [`${__dirname}/../public`] });
+    writer.log(juice(body));
+  }
 }
 
 if (require.main === module) {
