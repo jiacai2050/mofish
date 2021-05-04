@@ -1,16 +1,14 @@
 V2EX
 
 <%  for(let post of v2ex_posts) { %>
-- [<%= post.title %>](<%- post.url %>)
-<%= post.replies %> comments by <%- post.author_url %><%= post.author %> at <%= post.created %> in <%= post.node %>
+- <%= post.title %>(<%- post.url %>) <%= post.replies %> comments at <%= post.created %> in <%= post.node %>
 <%  }  %>
 
 Hacker News
 
 <%  for(let post of hn_posts) { %>
-- [<%= post.title %>](<%- post.url %>)
-<%= post.score %> points by <%- post.by %> at <%= post.created %> |
-(https://news.ycombinator.com/item?id=<%= post.id %>) <%= post.descendants %> comments
+- <%= post.title %>(<%- post.url %>)
+<%= post.score %> points by <%- post.by %> at <%= post.created %> | (https://news.ycombinator.com/item?id=<%= post.id %>) <%= post.descendants %> comments
 <%  }  %>
 
 Built With ❤ by https://github.com/<%- github_repo %>/tree/<%= github_sha %>
