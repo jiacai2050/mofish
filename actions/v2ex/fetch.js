@@ -14,7 +14,7 @@ async function insert_or_update(post) {
   const query = new Query(POST_TABLE_NAME);
   query.equalTo('url', post.url);
   let ret = await query.first();
-  if (!!ret) {
+  if (ret) {
     console.log('update');
     let id = ret.get('objectId');
     const item = Object.createWithoutData(POST_TABLE_NAME, id);

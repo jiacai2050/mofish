@@ -4,7 +4,7 @@ const fs = require('fs');
 const { Query } = require('leancloud-storage');
 const moment = require('moment');
 const { Console } = require('console');
-const { POST_TABLE_NAME, ONLINE_TABLE_NAME } = require('./common');
+const { POST_TABLE_NAME } = require('./common');
 
 async function fetch_post(start_ts, end_ts) {
   let q = new Query(POST_TABLE_NAME);

@@ -4,7 +4,7 @@ const fs = require('fs');
 const { Query } = require('leancloud-storage');
 const moment = require('moment');
 const { Console } = require('console');
-const { POST_TABLE_NAME, ONLINE_TABLE_NAME } = require('./common');
+const { POST_TABLE_NAME } = require('./common');
 
 async function fetch_post(start_ts, end_ts) {
   let q = new Query(POST_TABLE_NAME);
@@ -15,16 +15,16 @@ async function fetch_post(start_ts, end_ts) {
 
   let results = await q.find();
   let posts = [];
-  for(let post of results) {
+  for (let post of results) {
     let o = post.toJSON();
-    o['created'] = moment(post.get('time') * 1000).format('HH:mm:ss'),
+    o['created'] = moment(post.get('time') * 1000).format('HH:mm:ss');
     posts.push(o);
   }
   return posts;
 }
 
 async function main() {
-  const file_opts = {'encoding': 'utf8', 'flags': 'a'};
+  const file_opts = { 'encoding': 'utf8', 'flags': 'a' };
   const github_sha = process.env.GITHUB_SHA || 'master';
   const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/v2ex';
 
