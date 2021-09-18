@@ -48,6 +48,6 @@ jobs:
           subject: (${{env.POST_DATE}}) Hot Posts
           body: file://${{ env.TEXT_OUTPUT }}
           html_body: file://${{ env.HTML_OUTPUT }}
-          to: v2ex@groups.io,v2ex_hot_posts@googlegroups.com,v2ex_hot_posts@groups.163.com
+          to: v2ex@groups.io,v2ex_hot_posts@googlegroups.com
           # to: ${{ secrets.MAIL_TO }}
           from: GitHub Actions
