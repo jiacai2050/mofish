@@ -31,9 +31,9 @@ jobs:
             echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
       - shell: bash
         env:
-          LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
-          LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
-          LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
+          LEANCLOUD_APP_ID: ${{ secrets.US_LEANCLOUD_APP_ID }}
+          LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
+          LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
         run: |
           node actions/newsletter.js --day ${{ env.POST_DATE }} --htmloutput ${{ env.HTML_OUTPUT }} --textoutput ${{ env.TEXT_OUTPUT }}
           cat ${{ env.HTML_OUTPUT }}
