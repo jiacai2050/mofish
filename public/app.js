@@ -94,8 +94,8 @@
     });
   }
 
-  var APP_ID = 'vUbVDkqX7D3l5nlGrMB2YNga-gzGzoHsz';
-  var APP_KEY = 'hSeyI7bPX7rENUHyCzNDuyK8';
+  var APP_ID = 'jGqMETvzFsE2mQGc7xF9i06i-MdYXbMMI';
+  var APP_KEY = 'Pr63H0kAmBRoKHc32xEvOkAi';
 
   var current_day = moment().add(-1, 'd').format('YYYYMMDD');
   var m = /day=(\d+)/.exec(window.location.search);
