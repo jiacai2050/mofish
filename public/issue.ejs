@@ -6,7 +6,7 @@ labels: posts
 # Hacker News
 
 <%  for(let post of hn_posts) { %>
-### [<%= post.title %>](<%- post.url %>)
+#### [<%= post.title %>](<%- post.url %>)
 
 <%= post.score %> points by [<%= post.by %>](https://news.ycombinator.com/user?id=<%- post.by %>) at <%= post.created %> | [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
 
@@ -15,16 +15,14 @@ labels: posts
 # V2EX
 
 <%  for(let post of v2ex_posts) { %>
-<h3>
   <details>
     <summary>
-      <strong><a href="<%- post.url %>"><%= post.title %></a></strong>
+      <strong><%= post.title %></a></strong>
     </summary>
     <%- post.description %>
   </details>
-</h3>
     <p>
-    <%= post.replies %> comments by <a href="<%- post.author_url %>"><%= post.author %></a>
+    <a href="<%- post.url %>"><%= post.replies %> comments</a> by <a href="<%- post.author_url %>"><%= post.author %></a>
     at <%= post.created %>
     in <a href="<%- post.node_url %>"><%= post.node %></a>
     </p>
