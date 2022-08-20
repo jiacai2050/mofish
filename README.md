@@ -3,13 +3,12 @@
 [![newsletter](https://github.com/jiacai2050/v2ex/workflows/newsletter/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Anewsletter) [![v2ex-fetch](https://github.com/jiacai2050/v2ex/workflows/v2ex-fetch/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Av2ex-fetch)
 [![hackernews-fetch](https://github.com/jiacai2050/v2ex/workflows/hackernews-fetch/badge.svg)](https://github.com/jiacai2050/v2ex/actions?query=workflow%3Ahackernews-fetch)
 
-本项目定期采集 V2EX 站点的热帖，保存在 [LeanCloud](https://leancloud.cn/)，在线浏览地址：
+本项目定期采集 V2EX/HackerNews 站点的热帖，在线浏览地址：
 
-> https://liujiacai.gitee.io/v2ex/
-
-同时利用 GitHub Action，每天北京时间早 9 点，发送到以下邮件列表：
-- https://groups.google.com/g/v2ex_hot_posts
-- <del>https://groups.io/g/v2ex/topics （支持 RSS ）</del>
+- https://github.com/jiacai2050/v2ex/labels/posts
+- 历史数据（2022-08-20 前）可在这里查看
+  - https://groups.google.com/g/v2ex_hot_posts
+  - <del>https://groups.io/g/v2ex/topics （支持 RSS ）</del>
 
 ## 数据源
 
