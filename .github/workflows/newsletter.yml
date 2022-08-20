@@ -42,6 +42,7 @@ jobs:
         with:
           filename: issue-markdown.md
       - name: 'Send mail'
+        if: false
         uses: dawidd6/action-send-mail@v3.0.0
         with:
           server_address: ${{ secrets.SMTP_SERVER }}

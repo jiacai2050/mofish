@@ -3,47 +3,30 @@ title: <%= data_time %> Hot Posts</h2>
 labels: posts
 ---
 
-<body class="">
-  <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
-    <tr>
-      <td>&nbsp;</td>
-      <td class="container">
-        <div class="content">
+# Hacker News
 
-          <!-- START CENTERED WHITE CONTAINER -->
-          <table role="presentation" class="main">
+<%  for(let post of hn_posts) { %>
+### [<%= post.title %>](<%- post.url %>)
 
-            <!-- START MAIN CONTENT AREA -->
-            <tr>
-              <td class="wrapper">
-                <%- include('./mail_hackernews.ejs', {posts: hn_posts, git_sha: null}); %>
-              </td>
-            </tr>
-            <tr>
-              <td class="wrapper">
-                <%- include('./mail_v2ex.ejs', {posts: v2ex_posts, git_sha: null}); %>
-              </td>
-            </tr>
+<%= post.score %> points by [<%= post.by %>](https://news.ycombinator.com/user?id=<%- post.by %>) at <%= post.created %> | [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
 
-            <!-- END MAIN CONTENT AREA -->
-          </table>
-          <!-- END CENTERED WHITE CONTAINER -->
+<%  }  %>
 
-          <!-- START FOOTER -->
-          <div class="footer">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-              <tr>
-                <td class="content-block">
-                  Built With ❤️  by <a href="https://github.com/<%- github_repo %>/tree/<%= github_sha %>"><%- github_repo %></a>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <!-- END FOOTER -->
+# V2EX
 
-        </div>
-      </td>
-      <td>&nbsp;</td>
-    </tr>
-  </table>
-</body>
+<%  for(let post of v2ex_posts) { %>
+<h3>
+  <details>
+    <summary>
+      <strong><a href="<%- post.url %>"><%= post.title %></a></strong>
+    </summary>
+    <%- post.description %>
+  </details>
+</h3>
+    <p>
+    <%= post.replies %> comments by <a href="<%- post.author_url %>"><%= post.author %></a>
+    at <%= post.created %>
+    in <a href="<%- post.node_url %>"><%= post.node %></a>
+    </p>
+
+<%  }  %>
