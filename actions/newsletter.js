@@ -15,6 +15,7 @@ const file_opts = { 'encoding': 'utf8', 'flags': 'w' };
 async function main() {
   const html_file = argv.htmloutput || 'html-part.html';
   const text_file = argv.textoutput || 'text-part.txt';
+  const markdown_file = argv.markdownoutput || 'issue-markdown.md';
   let day = argv.day || moment().add(-1, 'd').startOf('day');
   if (typeof day === 'number') {
     day = moment(day + '').startOf('day');
@@ -27,6 +28,7 @@ async function main() {
 
   const html_writer = new Console(fs.createWriteStream(html_file, file_opts));
   const text_writer = new Console(fs.createWriteStream(text_file, file_opts));
+  const markdown_writer = new Console(fs.createWriteStream(markdown_file, file_opts));
 
   let hn_posts = [];
   try {
@@ -43,7 +45,8 @@ async function main() {
 
   for (let [tmpl_file, writer] of [
     ["html_mail.ejs", html_writer],
-    ["text_mail.ejs", text_writer]
+    ["text_mail.ejs", text_writer],
+    ["issue.ejs", markdown_writer],
   ]) {
     let tmpl = fs.readFileSync(`${__dirname}/../public/${tmpl_file}`, file_opts);
     let body = ejs.render(tmpl, {

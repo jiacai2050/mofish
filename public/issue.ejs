@@ -1,0 +1,49 @@
+---
+title: <%= data_time %> Hot Posts</h2>
+labels: posts
+---
+
+<body class="">
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+    <tr>
+      <td>&nbsp;</td>
+      <td class="container">
+        <div class="content">
+
+          <!-- START CENTERED WHITE CONTAINER -->
+          <table role="presentation" class="main">
+
+            <!-- START MAIN CONTENT AREA -->
+            <tr>
+              <td class="wrapper">
+                <%- include('./mail_hackernews.ejs', {posts: hn_posts, git_sha: null}); %>
+              </td>
+            </tr>
+            <tr>
+              <td class="wrapper">
+                <%- include('./mail_v2ex.ejs', {posts: v2ex_posts, git_sha: null}); %>
+              </td>
+            </tr>
+
+            <!-- END MAIN CONTENT AREA -->
+          </table>
+          <!-- END CENTERED WHITE CONTAINER -->
+
+          <!-- START FOOTER -->
+          <div class="footer">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td class="content-block">
+                  Built With ❤️  by <a href="https://github.com/<%- github_repo %>/tree/<%= github_sha %>"><%- github_repo %></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- END FOOTER -->
+
+        </div>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</body>
