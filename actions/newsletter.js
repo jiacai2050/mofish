@@ -7,8 +7,8 @@ const juice = require('juice');
 const moment = require('moment');
 const { argv } = require('yargs');
 
-const github_sha = process.env.GITHUB_SHA || 'master';
-const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/v2ex';
+const github_sha = process.env.GITHUB_SHA || 'main';
+const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/hot-posts';
 const file_opts = { 'encoding': 'utf8', 'flags': 'w' };
 
 
@@ -31,11 +31,16 @@ async function main() {
   const markdown_writer = new Console(fs.createWriteStream(markdown_file, file_opts));
 
   let hn_posts = [];
+  let titles = [];
   try {
     hn_posts = await hn.fetch_post(start_ts, end_ts);
   } catch (e) {
     console.log(`fetch hn post failed: ${e}`);
   }
+  for(let post of hn_posts.slice(0,2)) {
+    titles.push(post.title.replaceAll('"', ''));
+  }
+
   let v2ex_posts = [];
   try {
     v2ex_posts = await v2ex.fetch_post(start_ts, end_ts);
@@ -55,6 +60,7 @@ async function main() {
       github_sha: github_sha,
       github_repo: github_repo,
       data_time: day_str,
+      title: titles.join(' — ')
     }, { views: [`${__dirname}/../public`] });
     writer.log(juice(body));
   }

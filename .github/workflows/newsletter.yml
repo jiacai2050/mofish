@@ -36,6 +36,8 @@ jobs:
           LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
         run: |
           node actions/newsletter.js --day ${{ env.POST_DATE }} --htmloutput ${{ env.HTML_OUTPUT }} --textoutput ${{ env.TEXT_OUTPUT }}
+          title=$(head -2 issue-markdown.md | grep title | sed 's/title: //' | sed 's/"//g')
+          echo "TITLE=$title" >> $GITHUB_ENV
       - uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,9 +50,9 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: (${{env.POST_DATE}}) Hot Posts
+          subject: ${{env.TITLE}}
           body: file://${{ env.TEXT_OUTPUT }}
           html_body: file://${{ env.HTML_OUTPUT }}
-          to: v2ex_hot_posts@googlegroups.com
+          to: hot_posts@googlegroups.com
           # to: ${{ secrets.MAIL_TO }}
           from: GitHub Actions

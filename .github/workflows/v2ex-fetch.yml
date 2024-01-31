@@ -3,7 +3,7 @@ name: 'v2ex-fetch'
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
   schedule:
     - cron: '5 */4 * * *'
 
