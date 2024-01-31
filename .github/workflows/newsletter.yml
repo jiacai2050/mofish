@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -44,7 +44,7 @@ jobs:
         with:
           filename: issue-markdown.md
       - name: 'Send mail'
-        uses: dawidd6/action-send-mail@v3.0.0
+        uses: dawidd6/action-send-mail@v3
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
           server_port: ${{ secrets.SMTP_PORT }}
