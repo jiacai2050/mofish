@@ -48,7 +48,10 @@ async function fetch_posts() {
     try {
       let post = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
       post = await post.json();
-      posts.push(post);
+      const score = post.score;
+      if (score > 100) {
+        posts.push(post);
+      }
     } catch(e) {
       console.error(e);
     }

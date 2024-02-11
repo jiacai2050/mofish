@@ -54,5 +54,4 @@ jobs:
           body: file://${{ env.TEXT_OUTPUT }}
           html_body: file://${{ env.HTML_OUTPUT }}
           to: hot_posts@googlegroups.com
-          # to: ${{ secrets.MAIL_TO }}
-          from: GitHub Actions
+          from: Hot Posts Digest
