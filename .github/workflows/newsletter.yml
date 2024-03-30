@@ -6,7 +6,7 @@ on:
     - cron: '2 0 * * *'
 
 jobs:
-  send-mail:
+  newsletter:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
