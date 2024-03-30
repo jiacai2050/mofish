@@ -11,11 +11,11 @@ const github_sha = process.env.GITHUB_SHA || 'main';
 const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/hot-posts';
 const file_opts = { 'encoding': 'utf8', 'flags': 'w' };
 
-
 async function main() {
   const html_file = argv.htmloutput || 'html-part.html';
   const text_file = argv.textoutput || 'text-part.txt';
-  const markdown_file = argv.markdownoutput || 'issue-markdown.md';
+  const github_file = argv.githuboutput || 'github-issue.md';
+  const telegram_file = argv.telegramoutput || 'telegram-bot.md';
   let day = argv.day || moment().add(-1, 'd').startOf('day');
   if (typeof day === 'number') {
     day = moment(day + '').startOf('day');
@@ -28,7 +28,8 @@ async function main() {
 
   const html_writer = new Console(fs.createWriteStream(html_file, file_opts));
   const text_writer = new Console(fs.createWriteStream(text_file, file_opts));
-  const markdown_writer = new Console(fs.createWriteStream(markdown_file, file_opts));
+  const github_writer = new Console(fs.createWriteStream(github_file, file_opts));
+  const telegram_writer = new Console(fs.createWriteStream(telegram_file, file_opts));
 
   let hn_posts = [];
   let titles = [];
@@ -51,7 +52,8 @@ async function main() {
   for (let [tmpl_file, writer] of [
     ["html_mail.ejs", html_writer],
     ["text_mail.ejs", text_writer],
-    ["issue.ejs", markdown_writer],
+    ["issue.ejs", github_writer],
+    ["telegram.ejs", telegram_writer],
   ]) {
     let tmpl = fs.readFileSync(`${__dirname}/../public/${tmpl_file}`, file_opts);
     let body = ejs.render(tmpl, {

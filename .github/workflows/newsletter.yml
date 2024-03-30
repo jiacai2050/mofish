@@ -36,13 +36,20 @@ jobs:
           LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
         run: |
           node actions/newsletter.js --day ${{ env.POST_DATE }} --htmloutput ${{ env.HTML_OUTPUT }} --textoutput ${{ env.TEXT_OUTPUT }}
-          title=$(head -2 issue-markdown.md | grep title | sed 's/title: //' | sed 's/"//g')
+          title=$(head -2 github-issue.md | grep title | sed 's/title: //' | sed 's/"//g')
           echo "TITLE=$title" >> $GITHUB_ENV
-      - uses: JasonEtco/create-an-issue@v2
+      - name: Send telegram
+        run: |
+          export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
+          export TELEGRAM_CHAT_ID="@mofish_break"
+          export TELEGRAM_MESSAGE_FILE=telegram-bot.md
+          node actions/telegram.mjs
+      - name: Create github issue
+        uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: issue-markdown.md
+          filename: github-issue.md
       - name: 'Send mail'
         uses: dawidd6/action-send-mail@v3
         with:
