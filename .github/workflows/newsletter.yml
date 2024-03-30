@@ -44,6 +44,7 @@ jobs:
           export TELEGRAM_CHAT_ID="@mofish_break"
           export TELEGRAM_MESSAGE_FILE=telegram-bot.md
           node actions/telegram.mjs
+          exit 1
       - name: Create github issue
         uses: JasonEtco/create-an-issue@v2
         env:

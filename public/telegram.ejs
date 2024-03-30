@@ -1,14 +1,28 @@
-> [<%= data_time %>]
+> <%= data_time %>
 
 __Hacker News__
 
+<%
+    const badChars = ['(', ')', '.', '[', ']'];
+%>
 <%  for(let post of hn_posts) { %>
-- [<%= post.title %>](<%- post.url %>) <%= post.score %> points by [<%= post.by %>](https://news.ycombinator.com/user?id=<%- post.by %>) at <%= post.created %> | [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
-
+<%
+    let title = post.title;
+    for(const c of badChars) {
+      title = title.replaceAll(c, ' ');
+    }
+%>
+[<%= title %>](<%- post.url %>) <%= post.score %> points at <%= post.created %> [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
 <%  }  %>
 
 __V2EX__
 
 <%  for(let post of v2ex_posts) { %>
-- [<%= post.title %>](<%- post.url %>) in [<%= post.node %>](<%- post.node_url %>)
+<%
+    let title = post.title;
+    for(const c of badChars) {
+      title = title.replaceAll(c, ' ');
+    }
+%>
+[<%= title %>](<%- post.url %>) in [<%= post.node %>](<%- post.node_url %>)
 <%  }  %>
