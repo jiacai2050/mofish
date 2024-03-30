@@ -6,8 +6,8 @@ __Hacker News__
     for(let post of hn_posts) {
       let title = post.title;
       for(const c of badChars) {
-        title = title.replaceAll(c, ' ');
-    }
+        title = title.replaceAll(c, (m) => `\\${m}`);
+      }
 %>
 [<%= title %>](<%- post.url %>) <%= post.score %> points [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
 <%  }  %>
@@ -16,7 +16,7 @@ __V2EX__
 <%  for(let post of v2ex_posts) {
     let title = post.title;
     for(const c of badChars) {
-      title = title.replaceAll(c, ' ');
+      title = title.replaceAll(c, (m) => `\\${m}`);
     }
 %>
 [<%= title %>](<%- post.url %>) in [<%= post.node %>](<%- post.node_url %>)

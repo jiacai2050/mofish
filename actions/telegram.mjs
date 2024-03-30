@@ -6,9 +6,9 @@ const MESSAGE_FILE = process.env.TELEGRAM_MESSAGE_FILE;
 const api = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
 const message = fs.readFileSync(MESSAGE_FILE, 'utf8')
-      .replaceAll('+', ' ')
-      .replaceAll('#', ' ')
-      .replaceAll('|', ' ');
+      .replaceAll('+', '\\+')
+      .replaceAll('#', '\\#')
+      .replaceAll('|', '\\|');
 console.log(message);
 
 const ret = await fetch(api, {
