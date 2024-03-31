@@ -60,5 +60,5 @@ jobs:
           subject: ${{env.TITLE}}
           body: file://${{ env.TEXT_OUTPUT }}
           html_body: file://${{ env.HTML_OUTPUT }}
-          to: hot_posts@googlegroups.com
+          to: mo-fish@googlegroups.com
           from: Hot Posts Digest

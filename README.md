@@ -18,6 +18,6 @@
 - https://hacker-news.firebaseio.com/v0/topstories.json
 - https://hacker-news.firebaseio.com/v0/beststories.json
 
-## 注意⚠️
+## License
 
-为了防止重复抓取，需要将 v2ex 表的 url 字段设为唯一索引
+[MIT](./LICENSE)
