@@ -10,18 +10,18 @@ const message = fs.readFileSync(MESSAGE_FILE, 'utf8')
       .replaceAll('#', '\\#')
       .replaceAll('|', '\\|');
 console.log(message);
-
+const payload = JSON.stringify({
+    'text': message,
+    'chat_id': CHAT_ID,
+    'parse_mode': 'MarkdownV2',
+    'link_preview_options': { 'is_disabled': true }
+});
 const ret = await fetch(api, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify({
-    'text': message,
-    'chat_id': CHAT_ID,
-    'parse_mode': 'MarkdownV2',
-    'link_preview_options': { 'is_disabled': true }
-  })
+  body: payload,
 });
 
 if(!ret.ok) {

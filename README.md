@@ -6,6 +6,7 @@
 本项目定期采集 V2EX/HackerNews 站点的热帖，在线浏览地址：
 
 - https://github.com/jiacai2050/hot-posts/labels/posts
+- https://t.me/mofish_break
 - 历史数据（2022-08-20 前）可在这里查看
   - https://groups.google.com/g/hot_posts
   - <del>https://groups.io/g/v2ex/topics （支持 RSS ）</del>
