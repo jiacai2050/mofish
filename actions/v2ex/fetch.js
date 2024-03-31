@@ -1,6 +1,5 @@
 require('../../dep');
-const { Object, Query } = require('leanengine');
-const fetch = require('node-fetch');
+const { Object, Query } = require('leancloud-storage');
 const cheerio = require('cheerio');
 const { POST_TABLE_NAME, ONLINE_TABLE_NAME } = require('./common');
 

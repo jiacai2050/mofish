@@ -1,6 +1,5 @@
 require('../../dep');
-const { Object } = require('leanengine');
-const fetch = require('node-fetch');
+const { Object } = require('leancloud-storage');
 const { POST_TABLE_NAME } = require('./common')
 
 const Table = Object.extend(POST_TABLE_NAME);

@@ -1,26 +1,16 @@
 {
-  "name": "hot-posts",
+  "name": "mofish",
   "version": "1.0.0",
   "private": true,
-  "description": "Hot posts collection, V2EX & Hacker News",
+  "description": "了解社区最新动态，掌握摸鱼最佳姿势",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "connect-timeout": "^1.7.0",
     "ejs": "^2.7.4",
-    "express": "4.12.3",
     "juice": "^7.0.0",
     "leancloud-storage": "^3.15.0",
-    "leanengine": "^3.7.0",
     "moment": "^2.27.0",
     "mongodb": "^3.6.0",
-    "node-fetch": "^2.6.0",
-    "rss": "^1.2.2",
     "yargs": "^15.4.1"
-  },
-  "devDependencies": {
-    "nodemon": "^1.19.4"
-  },
-  "engines": {
-    "node": "8.x"
   }
 }

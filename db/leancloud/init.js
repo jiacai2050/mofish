@@ -1,4 +1,4 @@
-const AV = require('leanengine');
+const AV = require('leancloud-storage');
 
 AV.init({
   appId: process.env.LEANCLOUD_APP_ID,

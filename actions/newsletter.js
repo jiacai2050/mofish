@@ -8,7 +8,7 @@ const moment = require('moment');
 const { argv } = require('yargs');
 
 const github_sha = process.env.GITHUB_SHA || 'main';
-const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/hot-posts';
+const github_repo = process.env.GITHUB_REPOSITORY || 'jiacai2050/mofish';
 const file_opts = { 'encoding': 'utf8', 'flags': 'w' };
 
 async function main() {

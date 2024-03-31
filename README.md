@@ -1,15 +1,16 @@
-# 热帖收藏夹
+# mofish
 
 [![newsletter](https://github.com/jiacai2050/hot-posts/workflows/newsletter/badge.svg)](https://github.com/jiacai2050/hot-posts/actions?query=workflow%3Anewsletter) [![v2ex-fetch](https://github.com/jiacai2050/hot-posts/workflows/v2ex-fetch/badge.svg)](https://github.com/jiacai2050/hot-posts/actions?query=workflow%3Av2ex-fetch)
-[![hackernews-fetch](https://github.com/jiacai2050/hot-posts/workflows/hackernews-fetch/badge.svg)](https://github.com/jiacai2050/hot-posts/actions?query=workflow%3Ahackernews-fetch)
+[![hackernews-fetch](https://github.com/jiacai2050/mofish/workflows/hackernews-fetch/badge.svg)](https://github.com/jiacai2050/mofish/actions?query=workflow%3Ahackernews-fetch)
+
+> 了解社区最新动态，掌握摸鱼最佳姿势。
 
 本项目定期采集 V2EX/HackerNews 站点的热帖，在线浏览地址：
 
-- https://github.com/jiacai2050/hot-posts/labels/posts
+- https://github.com/jiacai2050/mofish/labels/posts
 - https://t.me/mofish_break
 - 历史数据（2022-08-20 前）可在这里查看
-  - https://groups.google.com/g/hot_posts
-  - <del>https://groups.io/g/v2ex/topics （支持 RSS ）</del>
+  - https://groups.google.com/g/mo-fish
 
 ## 数据源
 
