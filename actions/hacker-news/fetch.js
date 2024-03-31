@@ -36,9 +36,6 @@ async function fetch_posts() {
     console.error(e);
   }
 
-  // let top_ids = [24304275];
-  // let best_ids = [24303322, 24303779];
-
   let total_ids = top_ids.concat(best_ids);
   total_ids = new Set(total_ids);
   console.log(`ids length = ${total_ids.size}`);

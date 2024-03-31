@@ -5,17 +5,18 @@
 
 > 了解社区最新动态，掌握摸鱼最佳姿势。
 
-本项目定期采集 V2EX/HackerNews 站点的热帖，在线浏览地址：
+## 订阅
 
 - https://github.com/jiacai2050/mofish/labels/posts
 - https://t.me/mofish_break
-- 历史数据（2022-08-20 前）可在这里查看
-  - https://groups.google.com/g/mo-fish
+- https://discord.gg/AuvBvp5zgJ
+- https://groups.google.com/g/mo-fish
 
 ## 数据源
 
-定期抓取
 - https://www.v2ex.com/api/topics/hot.json
+- https://hacker-news.firebaseio.com/v0/topstories.json
+- https://hacker-news.firebaseio.com/v0/beststories.json
 
 ## 注意⚠️
 
