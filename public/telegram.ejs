@@ -13,12 +13,12 @@ __Hacker News__
     for(let post of hn_posts) {
       let title = normalize(post.title);
 %>
-[<%= title %>](<%- post.url %>) <%= post.score %> points [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
+[<%- title %>](<%- post.url %>) <%= post.score %> points [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
 <%  }  %>
 
 __V2EX__
 <%  for(let post of v2ex_posts) {
       let title = normalize(post.title);
 %>
-[<%= title %>](<%- post.url %>) in [<%= post.node %>](<%- post.node_url %>)
+[<%- title %>](<%- post.url %>) in [<%= post.node %>](<%- post.node_url %>)
 <%  }  %>
