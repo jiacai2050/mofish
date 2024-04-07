@@ -5,10 +5,7 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const MESSAGE_FILE = process.env.TELEGRAM_MESSAGE_FILE;
 const api = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
-const message = fs.readFileSync(MESSAGE_FILE, 'utf8')
-      .replaceAll('+', '\\+')
-      .replaceAll('#', '\\#')
-      .replaceAll('|', '\\|');
+const message = fs.readFileSync(MESSAGE_FILE, 'utf8');
 console.log(message);
 const payload = JSON.stringify({
     'text': message,

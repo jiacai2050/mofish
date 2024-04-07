@@ -2,12 +2,9 @@
 
 __Hacker News__
 <%
-    const badChars = ['(', ')', '.', '[', ']', '-', '~'];
+    // https://core.telegram.org/bots/api#markdownv2-style
     function normalize(title) {
-      for(const c of badChars) {
-        title = title.replaceAll(c, (m) => `\\${m}`);
-      }
-      return title;
+      return title.replace(/([-_*\[\]()~`>#+=|{}.!])/g, "\\$1");
     }
 
     for(let post of hn_posts) {
@@ -20,5 +17,5 @@ __V2EX__
 <%  for(let post of v2ex_posts) {
       let title = normalize(post.title);
 %>
-[<%- title %>](<%- post.url %>) in [<%= post.node %>](<%- post.node_url %>)
+[<%- title %>](<%- post.url %>) in [<%= normalize(post.node) %>](<%- post.node_url %>)
 <%  }  %>
