@@ -5,15 +5,12 @@ const { POST_TABLE_NAME } = require('./common')
 const Table = Object.extend(POST_TABLE_NAME);
 
 async function batch_save(posts) {
-  for (let batch of partition(posts, 200)) {
-    let posts = batch.map((post) => {
+  for (const post of posts) {
+    try {
       let table = new Table();
       table.set(post);
-      return table;
-    });
-    try {
-      let ret = await Object.saveAll(posts);
-      console.log(ret);
+      let ret = await table.save(null, {fetchWhenSave: true });
+      console.log(`id=${ret.get('id')}, title=${ret.get('title')}`);
     } catch(e) {
       console.error(`code = ${e.code}, message = ${e.message}`);
     }
@@ -52,6 +49,7 @@ async function fetch_posts() {
       console.error(e);
     }
   }
+  console.log(`ids length after filter = ${posts.length}`);
   return posts;
 }
 

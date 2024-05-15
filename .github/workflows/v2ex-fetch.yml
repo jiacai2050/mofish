@@ -25,15 +25,6 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm i
-      - name: fetch post CN
-        shell: bash
-        env:
-          LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
-          LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
-          LEANCLOUD_MASTER_KEY: ${{ secrets.LEANCLOUD_MASTER_KEY }}
-          TZ: 'Asia/Shanghai'
-        run: |
-          node actions/v2ex/fetch.js
       - name: fetch post US
         shell: bash
         env:
