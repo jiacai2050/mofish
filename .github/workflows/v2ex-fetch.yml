@@ -8,6 +8,15 @@ on:
     - cron: '5 */4 * * *'
 
 jobs:
+  keepalive-job:
+    name: Keepalive Workflow
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v2
+
   fetch-posts:
     runs-on: ubuntu-latest
     timeout-minutes: 5
