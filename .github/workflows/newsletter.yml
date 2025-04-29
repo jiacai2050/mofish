@@ -60,7 +60,7 @@ jobs:
           export TELEGRAM_MESSAGE_FILE=telegram-bot.md
           node actions/telegram.mjs
       - name: 'Send mail'
-        uses: dawidd6/action-send-mail@v4
+        uses: dawidd6/action-send-mail@v5
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
           server_port: ${{ secrets.SMTP_PORT }}
