@@ -2,18 +2,23 @@ name: 'newsletter'
 
 on:
   workflow_dispatch:
+    inputs:
+      input_date:
+        description: 'Specify a date (YYYYMMDD), defaults to yesterday'
+        required: false
+        default: ''
   schedule:
     - cron: '2 0 * * *'
 
 jobs:
-  keepalive-job:
-    name: Keepalive Workflow
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: gautamkrishnar/keepalive-workflow@v2
+  # keepalive-job:
+  #   name: Keepalive Workflow
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     actions: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: gautamkrishnar/keepalive-workflow@v2
 
   newsletter:
     runs-on: ubuntu-latest
@@ -37,8 +42,14 @@ jobs:
             echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
             echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
             echo "TEXT_OUTPUT=result.txt" >> $GITHUB_ENV
-            echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
+            input_date="${{ github.event.inputs.input_date }}"
+            if [ -z "$input_date" ]; then
+              echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
+            else
+              echo "POST_DATE=$input_date" >> "$GITHUB_ENV"
+            fi
       - shell: bash
+        if: '!cancelled()'
         env:
           LEANCLOUD_APP_ID: ${{ secrets.US_LEANCLOUD_APP_ID }}
           LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
@@ -54,6 +65,7 @@ jobs:
         with:
           filename: github-issue.md
       - name: Send telegram
+        if: '!cancelled()'
         run: |
           export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
           export TELEGRAM_CHAT_ID="@mofish_break"
@@ -61,6 +73,7 @@ jobs:
           node actions/telegram.mjs
       - name: 'Send mail'
         uses: dawidd6/action-send-mail@v5
+        if: '!cancelled()'
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
           server_port: ${{ secrets.SMTP_PORT }}
