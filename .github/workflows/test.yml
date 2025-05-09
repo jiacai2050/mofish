@@ -1,0 +1,56 @@
+name: 'test telegram'
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_date:
+        description: 'Specify a date (YYYYMMDD), defaults to yesterday'
+        required: false
+        default: ''
+
+jobs:
+  telegram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache node modules
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - run: npm i
+      - name: 'Set Args'
+        run: |
+            echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
+            echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
+            echo "TEXT_OUTPUT=result.txt" >> $GITHUB_ENV
+            input_date="${{ github.event.inputs.input_date }}"
+            if [ -z "$input_date" ]; then
+              echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
+            else
+              echo "POST_DATE=$input_date" >> "$GITHUB_ENV"
+            fi
+      - shell: bash
+        if: '!cancelled()'
+        env:
+          LEANCLOUD_APP_ID: ${{ secrets.US_LEANCLOUD_APP_ID }}
+          LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
+          LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
+        run: |
+          node actions/newsletter.js --day ${{ env.POST_DATE }} --htmloutput ${{ env.HTML_OUTPUT }} --textoutput ${{ env.TEXT_OUTPUT }}
+          title=$(head -2 github-issue.md | grep title | sed 's/title: //' | sed 's/"//g')
+          echo "TITLE=$title" >> $GITHUB_ENV
+      - name: Send telegram
+        run: |
+          export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
+          # export TELEGRAM_CHAT_ID="@mofish_break"
+          export TELEGRAM_CHAT_ID="-1002672418956"
+          export TELEGRAM_MESSAGE_FILE=telegram-bot.md
+          node actions/telegram.mjs

@@ -7,7 +7,7 @@ __Hacker News__
       return title.replace(/([-_*\[\]()~`>#+=|{}.!])/g, "\\$1");
     }
 
-    for(let post of hn_posts) {
+    for(let post of hn_posts.slice(0, 10)) {
       let title = normalize(post.title);
 %>
 [<%- title %>](<%- post.url %>) <%= post.score %> points [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
