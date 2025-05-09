@@ -8,7 +8,7 @@
 ## 订阅
 
 - https://github.com/jiacai2050/mofish/labels/posts
-- https://t.me/mofish_break
+- https://t.me/+XVM4rZ_fH5xkZjhl
 - https://discord.gg/AuvBvp5zgJ
 - https://groups.google.com/g/mo-fish
 
