@@ -1,5 +1,12 @@
 *<%= data_time.replaceAll('-', '\\-') %>*
 
+__V2EX__
+<%  for(let post of v2ex_posts) {
+      let title = normalize(post.title);
+%>
+[<%- title %>](<%- post.url %>) in <%= normalize(post.node) %>
+<%  }  %>
+
 __Hacker News__
 <%
     // https://core.telegram.org/bots/api#markdownv2-style
@@ -7,15 +14,8 @@ __Hacker News__
       return title.replace(/([-_*\[\]()~`>#+=|{}.!])/g, "\\$1");
     }
 
-    for(let post of hn_posts.slice(0, 10)) {
+    for(let post of hn_posts.slice(0, 15)) {
       let title = normalize(post.title);
 %>
 [<%- title %>](<%- post.url %>) <%= post.score %> points [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
-<%  }  %>
-
-__V2EX__
-<%  for(let post of v2ex_posts) {
-      let title = normalize(post.title);
-%>
-[<%- title %>](<%- post.url %>) in [<%= normalize(post.node) %>](<%- post.node_url %>)
 <%  }  %>
