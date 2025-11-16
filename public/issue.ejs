@@ -8,7 +8,7 @@ labels: posts
 <%  for(let post of v2ex_posts) { %>
   <details>
     <summary>
-      <strong><%- post.title %></a></strong>
+      <strong><%= post.title %></a></strong>
     </summary>
     <%- post.description %>
   </details>
@@ -25,7 +25,7 @@ labels: posts
 <%  for(let post of hn_posts) { %>
   <details>
     <summary>
-      <strong><%- post.title %></strong>
+      <strong><%= post.title %></strong>
     </summary>
     <%- post.summary %>
   </details>
