@@ -20,14 +20,37 @@ async function fetch_post(start_ts, end_ts) {
     let o = post.toJSON();
     o["created"] = moment(post.get("time") * 1000).format("HH:mm:ss");
     const url = post.get("url");
-    const summary = await ai_summarize(url);
-    if (summary) {
-      o["summary"] = marked.parse(summary);
-    }
-
+    o["summary"] = await get_summary(url);
     posts.push(o);
   }
   return posts;
+}
+
+async function get_summary(url) {
+  try {
+    const summary = await ai_summarize(url);
+    if (summary) {
+      return marked.parse(summary);
+    }
+    return await page_desc(url);
+  } catch (err) {
+    console.warn(`Get summary failed for ${url}, error: ${err}`);
+    return url;
+  }
+}
+
+async function page_desc(url) {
+  const params = new URLSearchParams({ url: url });
+  const resp = await fetch(
+    `https://edgebin.liujiacai.net/page-meta?${params.toString()}`,
+  );
+  const obj = await resp.json();
+  return (
+    obj["description"] ||
+    obj["og:description"] ||
+    obj["twitter:description"] ||
+    obj["url"]
+  );
 }
 
 async function ai_summarize(url) {
@@ -35,8 +58,9 @@ async function ai_summarize(url) {
     model: "@cf/google/gemma-3-12b-it",
     url: url,
   });
-  const url = `https://api.liujiacai.net/ai?${params.toString()}`;
-  const resp = await fetch(url);
+  const resp = await fetch(
+    `https://api.liujiacai.net/ai/summary?${params.toString()}`,
+  );
   const text = await resp.text();
   if (!resp.ok) {
     console.warn(
