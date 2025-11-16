@@ -23,8 +23,13 @@ labels: posts
 # Hacker News
 
 <%  for(let post of hn_posts) { %>
-#### [<%- post.title %>](<%- post.url %>)
+  <details>
+    <summary>
+      <strong><%- post.title %></a></strong>
+    </summary>
+    <%- post.summary %>
+  </details>
 
-<%= post.score %> points by [<%= post.by %>](https://news.ycombinator.com/user?id=<%- post.by %>) at <%= post.created %> | [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
+[<%= post.score %> points](<%- post.url %>) by [<%= post.by %>](https://news.ycombinator.com/user?id=<%- post.by %>) at <%= post.created %> | [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
 
 <%  }  %>
