@@ -9,6 +9,7 @@
     "ejs": "^2.7.4",
     "juice": "^7.0.0",
     "leancloud-storage": "^3.15.0",
+    "marked": "^17.0.0",
     "moment": "^2.27.0",
     "mongodb": "^3.6.0",
     "yargs": "^15.4.1"
