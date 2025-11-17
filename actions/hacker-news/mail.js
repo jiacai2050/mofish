@@ -19,8 +19,12 @@ async function fetch_post(start_ts, end_ts) {
   for (let post of results) {
     let o = post.toJSON();
     o["created"] = moment(post.get("time") * 1000).format("HH:mm:ss");
-    const url = post.get("url");
-    o["summary"] = await get_summary(url);
+    const url =
+      post.get("url") ||
+      `https://news.ycombinator.com/item?id=${post.get("id")}`;
+
+    o["summary"] = (await get_summary(url)) || url;
+    o["hostname"] = new URL(url).hostname.replace("www.", "");
     posts.push(o);
   }
   return posts;
@@ -35,7 +39,6 @@ async function get_summary(url) {
     return await page_desc(url);
   } catch (err) {
     console.warn(`Get summary failed for ${url}, error: ${err}`);
-    return url;
   }
 }
 

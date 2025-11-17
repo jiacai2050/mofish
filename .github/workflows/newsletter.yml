@@ -1,14 +1,14 @@
-name: 'newsletter'
+name: "newsletter"
 
 on:
   workflow_dispatch:
     inputs:
       input_date:
-        description: 'Specify a date (YYYYMMDD), defaults to yesterday'
+        description: "Specify a date (YYYYMMDD), defaults to yesterday"
         required: false
-        default: ''
+        default: ""
   schedule:
-    - cron: '2 0 * * *'
+    - cron: "2 0 * * *"
 
 jobs:
   # keepalive-job:
@@ -22,7 +22,7 @@ jobs:
 
   newsletter:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
       - name: Cache node modules
@@ -37,19 +37,19 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm i
-      - name: 'Set Args'
+      - name: "Set Args"
         run: |
-            echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
-            echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
-            echo "TEXT_OUTPUT=result.txt" >> $GITHUB_ENV
-            input_date="${{ github.event.inputs.input_date }}"
-            if [ -z "$input_date" ]; then
-              echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
-            else
-              echo "POST_DATE=$input_date" >> "$GITHUB_ENV"
-            fi
+          echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
+          echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
+          echo "TEXT_OUTPUT=result.txt" >> $GITHUB_ENV
+          input_date="${{ github.event.inputs.input_date }}"
+          if [ -z "$input_date" ]; then
+            echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
+          else
+            echo "POST_DATE=$input_date" >> "$GITHUB_ENV"
+          fi
       - shell: bash
-        if: '!cancelled()'
+        if: "!cancelled()"
         env:
           LEANCLOUD_APP_ID: ${{ secrets.US_LEANCLOUD_APP_ID }}
           LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
@@ -65,16 +65,16 @@ jobs:
         with:
           filename: github-issue.md
       - name: Send telegram
-        if: '!cancelled()'
+        if: "!cancelled()"
         run: |
           export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
           # export TELEGRAM_CHAT_ID="@mofish_break"
           export TELEGRAM_CHAT_ID="-1002672418956"
           export TELEGRAM_MESSAGE_FILE=telegram-bot.md
           node actions/telegram.mjs
-      - name: 'Send mail'
+      - name: "Send mail"
         uses: dawidd6/action-send-mail@v6
-        if: '!cancelled()'
+        if: "!cancelled()"
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
           server_port: ${{ secrets.SMTP_PORT }}
