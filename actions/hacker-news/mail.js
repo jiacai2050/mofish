@@ -24,6 +24,7 @@ async function fetch_post(start_ts, end_ts) {
       `https://news.ycombinator.com/item?id=${post.get("id")}`;
 
     o["summary"] = (await get_summary(url)) || url;
+    o["summary_html"] = marked.parse(o["summary"]);
     o["hostname"] = new URL(url).hostname.replace("www.", "");
     posts.push(o);
   }
@@ -34,7 +35,7 @@ async function get_summary(url) {
   try {
     const summary = await ai_summarize(url);
     if (summary) {
-      return marked.parse(summary);
+      return summary;
     }
     return await page_desc(url);
   } catch (err) {
@@ -49,10 +50,7 @@ async function page_desc(url) {
   );
   const obj = await resp.json();
   return (
-    obj["description"] ||
-    obj["og:description"] ||
-    obj["twitter:description"] ||
-    obj["url"]
+    obj["description"] || obj["og:description"] || obj["twitter:description"]
   );
 }
 
