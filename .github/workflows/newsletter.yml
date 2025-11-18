@@ -42,6 +42,7 @@ jobs:
           echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
           echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
           echo "TEXT_OUTPUT=result.txt" >> $GITHUB_ENV
+          echo "TELEGRAM_MESSAGE_FILE=telegram-bot.md" >> $GITHUB_ENV"
           input_date="${{ github.event.inputs.input_date }}"
           if [ -z "$input_date" ]; then
             echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date=' 1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
@@ -60,17 +61,23 @@ jobs:
           echo "TITLE=$title" >> $GITHUB_ENV
       - name: Create github issue
         uses: JasonEtco/create-an-issue@v2
+        id: create-issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           filename: github-issue.md
+      - name: Add issue link to telegram message
+        run: |
+          GITHUB_ISSUE_URL=${{ steps.create-issue.outputs.url }}
+          sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TELEGRAM_MESSAGE_FILE
+          sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TEXT_OUTPUT
+          sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $HTML_OUTPUT
       - name: Send telegram
         if: "!cancelled()"
         run: |
           export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
           # export TELEGRAM_CHAT_ID="@mofish_break"
           export TELEGRAM_CHAT_ID="-1002672418956"
-          export TELEGRAM_MESSAGE_FILE=telegram-bot.md
           node actions/telegram.mjs
       - name: "Send mail"
         uses: dawidd6/action-send-mail@v6
