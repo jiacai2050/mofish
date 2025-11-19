@@ -14,7 +14,7 @@ const file_opts = { 'encoding': 'utf8', 'flags': 'w' };
 async function main() {
   const html_file = argv.htmloutput || 'html-part.html';
   const text_file = argv.textoutput || 'text-part.txt';
-  const github_file = argv.githuboutput || 'github-issue.md';
+  const github_file = argv.issueoutput || 'github-issue.md';
   const telegram_file = argv.telegramoutput || 'telegram-bot.md';
   let day = argv.day || moment().add(-1, 'd').startOf('day');
   if (typeof day === 'number') {
