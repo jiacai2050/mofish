@@ -72,8 +72,9 @@ async function ai_summarize(url) {
   return text;
 }
 
+const file_opts = { encoding: "utf8", flags: "a" };
+
 async function main() {
-  const file_opts = { encoding: "utf8", flags: "a" };
   const github_sha = process.env.GITHUB_SHA || "main";
   const github_repo = process.env.GITHUB_REPOSITORY || "jiacai2050/mofish";
 

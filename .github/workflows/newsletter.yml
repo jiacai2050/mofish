@@ -11,15 +11,6 @@ on:
     - cron: "2 0 * * *"
 
 jobs:
-  # keepalive-job:
-  #   name: Keepalive Workflow
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     actions: write
-  #   steps:
-  #     - uses: actions/checkout@v5
-  #     - uses: gautamkrishnar/keepalive-workflow@v2
-
   newsletter:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -66,7 +57,14 @@ jobs:
           title=$(head -2 github-issue.md | grep title | sed 's/title: //' | sed 's/"//g')
           echo "TITLE=$title" >> $GITHUB_ENV
           tail -n +5 ${{ env.ISSUE_OUTPUT }} >> $GITHUB_STEP_SUMMARY
+          git status
+      - name: Add hackernew to github repo
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: mofish-bot
+          add: "data"
       - name: Create github issue
+        if: "!cancelled()"
         uses: JasonEtco/create-an-issue@v2
         id: create-issue
         env:
