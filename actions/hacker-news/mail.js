@@ -44,7 +44,7 @@ async function get_summary(url) {
 }
 
 async function page_desc(url) {
-  const params = new URLSearchParams({ url: url });
+  const params = new URLSearchParams({ url });
   const resp = await fetch(
     `https://edgebin.liujiacai.net/page-meta?${params.toString()}`,
   );
@@ -56,8 +56,8 @@ async function page_desc(url) {
 
 async function ai_summarize(url) {
   const params = new URLSearchParams({
+    url,
     model: "@cf/google/gemma-3-12b-it",
-    url: url,
   });
   const resp = await fetch(
     `https://api.liujiacai.net/ai/summary?${params.toString()}`,

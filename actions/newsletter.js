@@ -95,9 +95,17 @@ function saveHNToFile(filepath, posts) {
     `Write hn post to local file: ${filepath}; total ${posts.length} posts`,
   );
   for (let post of posts) {
-    delete post["summary_html"];
-    delete post["created"];
-    delete post["hostname"];
+    for (const field of [
+      "summary_html",
+      "created",
+      "hostname",
+      "kids",
+      "createdAt",
+      "updatedAt",
+      "objectId",
+    ]) {
+      delete post[field];
+    }
   }
   fs.writeFileSync(filepath, JSON.stringify(posts));
 }
