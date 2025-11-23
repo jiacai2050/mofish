@@ -9,14 +9,3 @@
 <%- post.summary %>
 
 <%  }  %>
-
-# V2EX
-
-<%  for(let post of v2ex_posts) { %>
-
-# <%= post.title %>
-
-> [<%= post.replies %>](<%- post.url %>) by [<%= post.author %>](<%- post.author_url %>) at <%= post.created %> in [<%= post.node %>](<%- post.node_url %>)
-<%- post.description %>
-
-<%  }  %>
