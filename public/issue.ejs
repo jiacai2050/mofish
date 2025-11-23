@@ -5,7 +5,7 @@ labels: posts
 
 # Hacker News
 
-<%  for(let post of hn_posts) { %>
+<%  for(let post of hn_posts.slice(0, 20)) { %>
   <details>
     <summary>
       <strong><%= post.title %></strong>

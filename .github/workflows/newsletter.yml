@@ -76,7 +76,6 @@ jobs:
         id: send-telegram
         run: |
           GITHUB_ISSUE_URL=${{ steps.create-issue.outputs.url }}
-          sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TELEGRAM_MESSAGE_FILE
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TELEGRAPH_MESSAGE_FILE
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TEXT_OUTPUT
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $HTML_OUTPUT
@@ -84,7 +83,7 @@ jobs:
         if: "!cancelled()"
         run: |
           echo "- GitHub issue: ${{ steps.create-issue.outputs.url }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Telegraph post: ${{ steps.send-telegram.outputs.url }} >> $GITHUB_STEP_SUMMARY
+          echo "- Telegraph post: ${{ steps.send-telegram.outputs.url }}" >> $GITHUB_STEP_SUMMARY
           tail -n +5 ${{ env.ISSUE_OUTPUT }} >> $GITHUB_STEP_SUMMARY
       - name: Send telegram
         if: "!cancelled()"
