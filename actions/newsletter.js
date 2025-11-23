@@ -37,8 +37,19 @@ async function main() {
 
   let hn_posts = [];
   let titles = [];
+  const hn_local_file = getHNFilePath(day_str);
+  const hn_file_exists = fs.existsSync(hn_local_file);
   try {
-    hn_posts = await hn.fetch_post(start_ts, end_ts);
+    if (hn_file_exists) {
+      console.log(`Load hn posts from local file: ${hn_local_file}`);
+      const data = fs.readFileSync(hn_local_file, { encoding: "utf8" });
+      hn_posts = JSON.parse(data);
+      for (let post of hn_posts) {
+        add_extra_fields(post);
+      }
+    } else {
+      hn_posts = await hn.fetch_post(start_ts, end_ts);
+    }
   } catch (e) {
     console.log(`fetch hn post failed: ${e}`);
   }
@@ -78,8 +89,14 @@ async function main() {
     writer.log(juice(body));
   }
 
+  if (hn_file_exists) {
+    console.log(
+      `Skip save hn posts to local file, file exists: ${hn_local_file}`,
+    );
+    return;
+  }
   try {
-    const f = `${__dirname}/../data/${day_str}.json`;
+    const f = getHNFilePath(day_str);
     saveHNToFile(f, hn_posts);
   } catch (e) {
     console.error(`save hn post failed: ${e}`);
@@ -88,6 +105,10 @@ async function main() {
 
 if (require.main === module) {
   main();
+}
+
+function getHNFilePath(day_str) {
+  return `${__dirname}/../data/${day_str}.json`;
 }
 
 function saveHNToFile(filepath, posts) {

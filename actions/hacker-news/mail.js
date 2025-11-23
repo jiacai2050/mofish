@@ -17,18 +17,24 @@ async function fetch_post(start_ts, end_ts) {
   let results = await q.find();
   let posts = [];
   for (let post of results) {
-    let o = post.toJSON();
-    o["created"] = moment(post.get("time") * 1000).format("HH:mm:ss");
-    const url =
-      post.get("url") ||
-      `https://news.ycombinator.com/item?id=${post.get("id")}`;
-
+    const o = post.toJSON();
+    const url = get_post_url(o);
     o["summary"] = (await get_summary(url)) || url;
-    o["summary_html"] = marked.parse(o["summary"]);
-    o["hostname"] = new URL(url).hostname.replace("www.", "");
+    add_extra_fields(o);
     posts.push(o);
   }
   return posts;
+}
+
+function get_post_url(post) {
+  return post["url"] || `https://news.ycombinator.com/item?id=${post["id"]}`;
+}
+
+function add_extra_fields(post) {
+  post["summary_html"] = marked.parse(post["summary"]);
+  const url = get_post_url(post);
+  post["created"] = moment(post["time"] * 1000).format("HH:mm:ss");
+  post["hostname"] = new URL(url).hostname.replace("www.", "");
 }
 
 async function get_summary(url) {
@@ -106,4 +112,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { fetch_post };
+module.exports = { fetch_post, get_post_url, add_extra_fields };
