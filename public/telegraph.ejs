@@ -1,0 +1,22 @@
+> This post is also available on the web as a [GitHub issue](__MOFISH_ISSUE_URL__).
+
+<%  for(let post of hn_posts) { %>
+
+# <%= post.title %>
+
+> [<%= post.hostname %>](<%- post.url %>) | <%= post.score %> points by [<%= post.by %>](https://news.ycombinator.com/user?id=<%- post.by %>) at <%= post.created %> | [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
+
+<%- post.summary %>
+
+<%  }  %>
+
+# V2EX
+
+<%  for(let post of v2ex_posts) { %>
+
+# <%= post.title %>
+
+> [<%= post.replies %>](<%- post.url %>) by [<%= post.author %>](<%- post.author_url %>) at <%= post.created %> in [<%= post.node %>](<%- post.node_url %>)
+<%- post.description %>
+
+<%  }  %>

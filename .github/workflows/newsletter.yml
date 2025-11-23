@@ -34,6 +34,7 @@ jobs:
           echo "HTML_OUTPUT=result.html" >> $GITHUB_ENV
           echo "TEXT_OUTPUT=result.txt" >> $GITHUB_ENV
           echo "TELEGRAM_MESSAGE_FILE=telegram-bot.md" >> $GITHUB_ENV
+          echo "TELEGRAPH_MESSAGE_FILE=telegraph.md" >> $GITHUB_ENV
           echo "ISSUE_OUTPUT=github-issue.md" >> $GITHUB_ENV
           input_date="${{ github.event.inputs.input_date }}"
           if [ -z "$input_date" ]; then
@@ -52,7 +53,8 @@ jobs:
           --htmloutput ${{ env.HTML_OUTPUT }} \
           --textoutput ${{ env.TEXT_OUTPUT }} \
           --issueoutput ${{ env.ISSUE_OUTPUT }} \
-          --telegramoutput ${{ env.TELEGRAM_MESSAGE_FILE }}
+          --telegramoutput ${{ env.TELEGRAM_MESSAGE_FILE }} \
+          --telegraphoutput ${{ env.TELEGRAPH_MESSAGE_FILE }}
 
           title=$(head -2 github-issue.md | grep title | sed 's/title: //' | sed 's/"//g')
           echo "TITLE=$title" >> $GITHUB_ENV
@@ -75,6 +77,7 @@ jobs:
         run: |
           GITHUB_ISSUE_URL=${{ steps.create-issue.outputs.url }}
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TELEGRAM_MESSAGE_FILE
+          sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TELEGRAPH_MESSAGE_FILE
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TEXT_OUTPUT
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $HTML_OUTPUT
       - name: Send telegram
@@ -83,6 +86,7 @@ jobs:
           export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
           # export TELEGRAM_CHAT_ID="@mofish_break"
           export TELEGRAM_CHAT_ID="-1002672418956"
+          export TELEGRAPH_POST_TITLE="HNews Digest at ${{ env.POST_DATE }}"
           node actions/telegram.mjs
       - name: "Send mail"
         uses: dawidd6/action-send-mail@v6

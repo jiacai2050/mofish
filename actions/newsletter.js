@@ -16,6 +16,7 @@ async function main() {
   const text_file = argv.textoutput || "text-part.txt";
   const github_file = argv.issueoutput || "github-issue.md";
   const telegram_file = argv.telegramoutput || "telegram-bot.md";
+  const telegraph_file = argv.telegraphoutput || "telegraph.md";
   let day = argv.day || moment().add(-1, "d").startOf("day");
   if (typeof day === "number") {
     day = moment(day + "").startOf("day");
@@ -34,6 +35,9 @@ async function main() {
   const telegram_writer = new Console(
     fs.createWriteStream(telegram_file, file_opts),
   );
+  const telegraph_writer = new Console(
+    fs.createWriteStream(telegraph_file, file_opts),
+  );
 
   let hn_posts = [];
   let titles = [];
@@ -45,7 +49,7 @@ async function main() {
       const data = fs.readFileSync(hn_local_file, { encoding: "utf8" });
       hn_posts = JSON.parse(data);
       for (let post of hn_posts) {
-        add_extra_fields(post);
+        hn.add_extra_fields(post);
       }
     } else {
       hn_posts = await hn.fetch_post(start_ts, end_ts);
@@ -69,6 +73,7 @@ async function main() {
     ["text_mail.ejs", text_writer],
     ["issue.ejs", github_writer],
     ["telegram.ejs", telegram_writer],
+    ["telegraph.ejs", telegraph_writer],
   ]) {
     let tmpl = fs.readFileSync(
       `${__dirname}/../public/${tmpl_file}`,

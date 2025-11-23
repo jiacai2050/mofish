@@ -1,5 +1,7 @@
 *<%= data_time.replaceAll('-', '\\-') %>*
 
+This post is also available on the web as a [GitHub issue](__MOFISH_ISSUE_URL__)
+
 __V2EX__
 <%  for(let post of v2ex_posts) {
       let title = normalize(post.title);
@@ -19,5 +21,3 @@ __Hacker News__
 %>
 [<%- title %>](<%- post.url %>) <%= post.score %> points [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
 <%  }  %>
-
-This post is also available on the web as a [GitHub issue](__MOFISH_ISSUE_URL__)
