@@ -57,7 +57,7 @@ async function main() {
   } catch (e) {
     console.log(`fetch hn post failed: ${e}`);
   }
-  for (let post of hn_posts.slice(0, 2)) {
+  for (let post of hn_posts.slice(0, 1)) {
     titles.push(post.title.replaceAll('"', ""));
   }
 

@@ -93,7 +93,7 @@ jobs:
           export TELEGRAPH_TOKEN=${{ secrets.TELEGRAPH_TOKEN }}
           # export TELEGRAM_CHAT_ID="@mofish_break"
           export TELEGRAM_CHAT_ID="-1002672418956"
-          export TELEGRAPH_POST_TITLE="HNews Digest at ${{ env.POST_DATE }}"
+          export TELEGRAPH_POST_TITLE="${{ env.TITLE }}"
           node actions/telegram.mjs
       - name: "Send mail"
         uses: dawidd6/action-send-mail@v6

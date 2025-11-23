@@ -6,12 +6,13 @@ const POST_TOKEN = process.env.TELEGRAPH_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID || "-1002672418956";
 const MESSAGE_FILE = process.env.TELEGRAM_MESSAGE_FILE || "telegram-bot.md";
 const POST_FILE = process.env.TELEGRAPH_MESSAGE_FILE || "telegraph.md";
-const POST_TITLE = process.env.TELEGRAPH_POST_TITLE || "HN Summary";
+const POST_TITLE = process.env.TELEGRAPH_POST_TITLE || "HNew Digst";
 
 async function createTelegrahPost() {
   const content = fs.readFileSync(POST_FILE, "utf8");
   return await createTelegraphPage(POST_TOKEN, POST_TITLE, content, {
     authorUrl: "https://github.com/jiacai2050/mofish/",
+    authorName: "mofish",
   });
 }
 

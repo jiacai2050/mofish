@@ -64,5 +64,5 @@ jobs:
           # export TELEGRAM_CHAT_ID="@mofish_break"
           export TELEGRAM_CHAT_ID="-1002672418956"
           export TELEGRAM_MESSAGE_FILE=telegram-bot.md
-          export TELEGRAPH_POST_TITLE="HNews Digest at ${{ env.POST_DATE }}"
+          export TELEGRAPH_POST_TITLE="${{ env.TITLE }}"
           node actions/telegram.mjs
