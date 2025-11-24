@@ -7,7 +7,6 @@
     "cheerio": "^1.0.0-rc.3",
     "connect-timeout": "^1.7.0",
     "ejs": "^2.7.4",
-    "jsdom": "^27.2.0",
     "juice": "^7.0.0",
     "leancloud-storage": "^3.15.0",
     "marked": "^17.0.1",
