@@ -12,7 +12,7 @@ const POST_TITLE = process.env.TELEGRAPH_POST_TITLE || "HNew Digst";
 async function sendMessage() {
   const api = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
   const message = fs.readFileSync(MESSAGE_FILE, "utf8");
-  const text = `View it on the web at [${normalize(POST_TITLE)}](${POST_URL})\n\n${message}`;
+  const text = `View more on the web at [${normalize(POST_TITLE)}](${POST_URL})\n\n${message}`;
   // console.log(message);
   const payload = JSON.stringify({
     text,

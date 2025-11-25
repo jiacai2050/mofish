@@ -83,18 +83,20 @@ jobs:
       - name: Create telegraph post
         if: "!cancelled()"
         uses: jiacai2050/telegraph-action@v1
-        id: send-telegraph
+        id: telegraph
         with:
           token: ${{ secrets.TELEGRAPH_TOKEN }}
+          # telegram-token: ${{ secrets.TELEGRAM_TOKEN }}
+          # chat-id: "-1002672418956"
           title: ${{ env.TITLE }}
-          md-file: ${{ env.TELEGRAPH_MESSAGE_FILE }}
+          body-file: ${{ env.TELEGRAPH_MESSAGE_FILE }}
           author-name: "mofish"
           author-url: "${{ env.GITHUB_ISSUE_URL }}"
       - name: Append link to step summary
         if: "!cancelled()"
         run: |
           echo "- GitHub issue: ${{ steps.create-issue.outputs.url }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Telegraph post: ${{ steps.send-telegraph.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Telegraph post: ${{ steps.telegraph.outputs.url }}" >> $GITHUB_STEP_SUMMARY
           tail -n +5 ${{ env.ISSUE_OUTPUT }} >> $GITHUB_STEP_SUMMARY
       - name: Send telegram
         if: "!cancelled()"
@@ -102,8 +104,8 @@ jobs:
           export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
           # export TELEGRAM_CHAT_ID="@mofish_break"
           export TELEGRAM_CHAT_ID="-1002672418956"
-          export TELEGRAPH_POST_URL="${{ steps.send-telegraph.outputs.url }}"
-          export TELEGRAPH_POST_TITLE="${{ steps.send-telegraph.outputs.title }}"
+          export TELEGRAPH_POST_URL="${{ steps.telegraph.outputs.url }}"
+          export TELEGRAPH_POST_TITLE="${{ steps.telegraph.outputs.title }}"
           node actions/telegram.mjs
       - name: "Send mail"
         uses: dawidd6/action-send-mail@v6
