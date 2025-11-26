@@ -4,6 +4,7 @@
   "private": true,
   "description": "了解社区最新动态，掌握摸鱼最佳姿势",
   "dependencies": {
+    "@libsql/client": "^0.15.15",
     "cheerio": "^1.0.0-rc.3",
     "connect-timeout": "^1.7.0",
     "ejs": "^2.7.4",
