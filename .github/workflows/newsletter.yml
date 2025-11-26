@@ -98,12 +98,10 @@ jobs:
           echo "- GitHub issue: ${{ steps.create-issue.outputs.url }}" >> $GITHUB_STEP_SUMMARY
           echo "- Telegraph post: ${{ steps.telegraph.outputs.url }}" >> $GITHUB_STEP_SUMMARY
           tail -n +5 ${{ env.ISSUE_OUTPUT }} >> $GITHUB_STEP_SUMMARY
-
-          echo "GITHUB_ISSUE_LINK=${{ steps.create-issue.outputs.url }}" >> $GITHUB_ENV
-          echo "TELEGRAPH_POST_LINK=${{ steps.telegraph.outputs.url }}" >> $GITHUB_ENV
       - name: Save to sqlite3
         if: "!cancelled()"
         run: |
+          export TELEGRAPH_POST_URL="${{ steps.telegraph.outputs.url }}"
           export TURSO_DB_URL=libsql://mofish-jiacai2050.aws-us-west-2.turso.io
           export TURSO_TOKEN="${{ secrets.TURSO_TOKEN }}"
           node db/turso.js
