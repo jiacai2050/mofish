@@ -1,18 +1,8 @@
-<%
-    // https://core.telegram.org/bots/api#markdownv2-style
-    function normalize(title) {
-      return title.replace(/([-_*\[\]()~`>#+=|{}.!])/g, "\\$1");
-    }
-
-    for(let post of hn_posts.slice(0, 3)) {
-      let title = normalize(post.title);
+<%  for(let post of v2ex_posts) {
 %>
-[<%- title %>](<%- post.url %>) <%= post.score %> points [<%= post.descendants %> comments](https://news.ycombinator.com/item?id=<%= post.id %>)
-<%  }  %>
+# [<%- post.title %>](<%- post.url %>)
+> <%= post.replies %> comments by (<%- post.author_url %>) at <%= post.created %> in [<%= post.node %>](<%- post.node_url %>)
 
-__V2EX__
-<%  for(let post of v2ex_posts.slice(0, 5)) {
-      let title = normalize(post.title);
-%>
-[<%- title %>](<%- post.url %>) in <%= normalize(post.node) %>
+<%- post.description %>
+
 <%  }  %>

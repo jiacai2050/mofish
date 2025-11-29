@@ -21,6 +21,9 @@ export async function insertLinks(postDate, github, telegraph) {
   const sql = `
     INSERT INTO hn_links (post_date, github, telegraph)
     VALUES (?, ?, ?)
+    ON CONFLICT(post_date) DO UPDATE SET
+      github = COALESCE(NULLIF(excluded.github, ''), hn_links.github),
+      telegraph = COALESCE(NULLIF(excluded.telegraph, ''), hn_links.telegraph)
   `;
   const ret = await client.execute(sql, [postDate, github, telegraph], "write");
   return ret;

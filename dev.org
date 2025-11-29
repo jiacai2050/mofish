@@ -1,0 +1,35 @@
+#+TITLE: SQLite Babel Demo
+#+PROPERTY: header-args:sqlite :db mofish.db :colnames yes :results table
+
+* 查询
+#+begin_src sqlite
+SELECT * FROM hn_links
+#+end_src
+
+#+RESULTS:
+| id | post_date | github               | telegraph  |
+|----+-----------+----------------------+------------|
+|  1 |  20251111 | https://github.com/1 | telegraph1 |
+|  4 |  20251112 | github2              | telegraph1 |
+|  9 |  20251113 | github2              | telegraph1 |
+
+* 插入
+#+begin_src sqlite
+INSERT INTO hn_links (post_date, github, telegraph) VALUES (20251111, 'https://github.com/1', 'telegraph1')
+    ON CONFLICT(post_date) DO UPDATE SET
+      github = COALESCE(NULLIF(excluded.github, ''), hn_links.github),
+      telegraph = COALESCE(NULLIF(excluded.telegraph, ''), hn_links.telegraph);
+
+INSERT INTO hn_links (post_date, github, telegraph) VALUES (20251112, 'github2', 'telegraph1')
+    ON CONFLICT(post_date) DO UPDATE SET
+      github = COALESCE(NULLIF(excluded.github, ''), hn_links.github),
+      telegraph = COALESCE(NULLIF(excluded.telegraph, ''), hn_links.telegraph);
+
+INSERT INTO hn_links (post_date, github, telegraph) VALUES (20251113, 'github2', 'telegraph1')
+    ON CONFLICT(post_date) DO UPDATE SET
+      github = COALESCE(NULLIF(excluded.github, ''), hn_links.github),
+      telegraph = COALESCE(NULLIF(excluded.telegraph, ''), hn_links.telegraph);
+#+end_src
+
+#+RESULTS:
+|   |
