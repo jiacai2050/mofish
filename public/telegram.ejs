@@ -1,7 +1,7 @@
 <%  for(let post of v2ex_posts) {
 %>
 # [<%- post.title %>](<%- post.url %>)
-> <%= post.replies %> comments by (<%- post.author_url %>) at <%= post.created %> in [<%= post.node %>](<%- post.node_url %>)
+> <%= post.replies %> comments by [<%= post.author %>](<%- post.author_url %>) at <%= post.created %> in [<%= post.node %>](<%- post.node_url %>)
 
 <%- post.description %>
 

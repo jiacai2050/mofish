@@ -17,15 +17,20 @@ export async function initDatabase() {
   console.log(ret);
 }
 
-export async function insertLinks(postDate, github, telegraph) {
+export async function insertLinks(postDate, github, telegraph, telegraph_v2ex) {
   const sql = `
-    INSERT INTO hn_links (post_date, github, telegraph)
-    VALUES (?, ?, ?)
+    INSERT INTO hn_links (post_date, github, telegraph, telegraph_v2ex)
+    VALUES (?, ?, ?, ?)
     ON CONFLICT(post_date) DO UPDATE SET
       github = COALESCE(NULLIF(excluded.github, ''), hn_links.github),
-      telegraph = COALESCE(NULLIF(excluded.telegraph, ''), hn_links.telegraph)
+      telegraph = COALESCE(NULLIF(excluded.telegraph, ''), hn_links.telegraph),
+      telegraph_v2ex = COALESCE(NULLIF(excluded.telegraph_v2ex, ''), hn_links.telegraph_v2ex)
   `;
-  const ret = await client.execute(sql, [postDate, github, telegraph], "write");
+  const ret = await client.execute(
+    sql,
+    [postDate, github, telegraph, telegraph_v2ex],
+    "write",
+  );
   return ret;
 }
 
@@ -68,11 +73,12 @@ async function main() {
   await initDatabase();
   const postDate = process.env.POST_DATE;
   const github = process.env.GITHUB_ISSUE_URL || "";
-  const telegraph = process.env.TELEGRAPH_POST_URL || "";
+  const telegraph_hnews = process.env.TELEGRAPH_HNEWS_URL || "";
+  const telegraph_v2ex = process.env.TELEGRAPH_V2EX_URL || "";
   if (postDate) {
     const m = moment(postDate, "YYYYMMDD");
     const ts = m.unix();
-    const ret = await insertLinks(ts, github, telegraph);
+    const ret = await insertLinks(ts, github, telegraph_hnews, telegraph_v2ex);
     console.log(`Inserted links for date ${postDate}(${ts}):`, ret);
 
     const postFile = `${import.meta.dirname}/../data/${m.format("YYYY-MM-DD")}.json`;

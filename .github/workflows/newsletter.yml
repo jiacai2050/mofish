@@ -114,7 +114,8 @@ jobs:
       - name: Save to sqlite3
         if: "!cancelled()"
         run: |
-          export TELEGRAPH_POST_URL="${{ steps.telegraph.outputs.url }}"
+          export TELEGRAPH_HNEWS_URL="${{ steps.telegraph-hnews.outputs.url }}"
+          export TELEGRAPH_V2EX_URL="${{ steps.telegraph-v2ex.outputs.url }}"
           export TURSO_DB_URL=libsql://mofish-jiacai2050.aws-us-west-2.turso.io
           export TURSO_TOKEN="${{ secrets.TURSO_TOKEN }}"
           node db/turso.js
