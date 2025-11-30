@@ -77,7 +77,6 @@ jobs:
           GITHUB_ISSUE_URL=${{ steps.create-issue.outputs.url }}
           GITHUB_ISSUE_URL="${GITHUB_ISSUE_URL:-https://github.com/jiacai2050/mofish}"
           echo "GITHUB_ISSUE_URL=${GITHUB_ISSUE_URL}" >> $GITHUB_ENV
-          sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TELEGRAPH_MESSAGE_FILE
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $TEXT_OUTPUT
           sed -i "s|__MOFISH_ISSUE_URL__|${GITHUB_ISSUE_URL}|g" $HTML_OUTPUT
       - name: Create telegraph hnews post
