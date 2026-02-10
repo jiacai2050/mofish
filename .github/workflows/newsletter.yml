@@ -119,7 +119,7 @@ jobs:
           export TURSO_TOKEN="${{ secrets.TURSO_TOKEN }}"
           node db/turso.js
       - name: "Send mail"
-        uses: dawidd6/action-send-mail@v8
+        uses: dawidd6/action-send-mail@v9
         if: "!cancelled()"
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
