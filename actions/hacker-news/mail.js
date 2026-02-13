@@ -4,7 +4,7 @@ const fs = require("fs");
 const { Query } = require("leancloud-storage");
 const moment = require("moment");
 const { Console } = require("console");
-const { POST_TABLE_NAME } = require("./common");
+const { POST_TABLE_NAME, sleep } = require("./common");
 const marked = require("marked");
 
 async function fetch_post(start_ts, end_ts) {
@@ -65,17 +65,24 @@ async function ai_summarize(url) {
     url,
     model: "@cf/google/gemma-3-12b-it",
   });
-  const resp = await fetch(
-    `https://api.liujiacai.net/ai/summary?${params.toString()}`,
-  );
-  const text = await resp.text();
-  if (!resp.ok) {
-    console.warn(
-      `AI summarize failed for ${url}, status:${resp.status}, text:${text}`,
+  for (let retry = 1; retry <= 5; retry++) {
+    const resp = await fetch(
+      `https://api.liujiacai.net/ai/summary?${params.toString()}`,
     );
-    return null;
+    const text = await resp.text();
+    if (resp.ok) {
+      return text;
+    }
+
+    console.warn(
+      `AI summarize failed for ${url}, retry:${retry}, status:${resp.status}, text:${text}`,
+    );
+    if (resp.status >= 500) {
+      await sleep(10000 * retry);
+    } else {
+      return null;
+    }
   }
-  return text;
 }
 
 const file_opts = { encoding: "utf8", flags: "a" };
