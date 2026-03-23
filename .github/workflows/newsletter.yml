@@ -60,7 +60,7 @@ jobs:
           echo "TITLE=$title" >> $GITHUB_ENV
           git status
       - name: Add hackernew to github repo
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v10
         with:
           author_name: mofish-bot
           add: "data"
