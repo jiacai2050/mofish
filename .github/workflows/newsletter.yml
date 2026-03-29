@@ -130,4 +130,4 @@ jobs:
           body: file://${{ env.TEXT_OUTPUT }}
           html_body: file://${{ env.HTML_OUTPUT }}
           to: mo-fish@googlegroups.com
-          from: HNews Digest
+          from: HNews Digest <newsletter@liujiacai.net>
