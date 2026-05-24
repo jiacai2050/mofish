@@ -8,6 +8,15 @@
 .day-date { flex-shrink: 0; font-weight: 500; }
 .day-top1 { color: var(--pico-muted-color); font-size: 0.9em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* search */
+.search-box { position: relative; margin-bottom: 1.5rem; }
+#search-input { width: 100%; }
+#search-results { display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: 400px; overflow-y: auto; list-style: none; padding: 0; margin: 0; background: var(--pico-card-background-color); border: 1px solid var(--pico-muted-border-color); border-radius: 4px; z-index: 50; }
+#search-results li { padding: 0.4rem 0.8rem; border-bottom: 1px solid var(--pico-muted-border-color); }
+#search-results li:last-child { border-bottom: none; }
+#search-results li a { text-decoration: none; }
+#search-results li small { color: var(--pico-muted-color); margin-left: 0.5rem; }
+
 /* day page */
 .nav-links { display: flex; justify-content: space-between; margin-bottom: 1rem; }
 .post { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--pico-muted-border-color); }

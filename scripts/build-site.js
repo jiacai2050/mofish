@@ -38,6 +38,7 @@ function main() {
     .map(([key, days]) => ({ label: key, days: days.sort((a, b) => b.date.localeCompare(a.date)) }));
 
   fs.copyFileSync(path.join(TEMPLATE_DIR, 'style.css'), path.join(DIST_DIR, 'style.css'));
+  fs.copyFileSync(path.join(TEMPLATE_DIR, 'search.js'), path.join(DIST_DIR, 'search.js'));
 
   const indexHtml = ejs.render(indexTemplate, { months });
   fs.writeFileSync(path.join(DIST_DIR, 'index.html'), indexHtml);
@@ -57,8 +58,21 @@ function main() {
     }));
 
     const dayHtml = ejs.render(dayTemplate, { date, posts: postsWithHtml, prev, next });
-    fs.writeFileSync(path.join(DIST_DIR, date + '.html'), dayHtml);
+    const dayDir = path.join(DIST_DIR, date);
+    if (!fs.existsSync(dayDir)) fs.mkdirSync(dayDir, { recursive: true });
+    fs.writeFileSync(path.join(dayDir, 'index.html'), dayHtml);
   }
+
+  // Generate search index
+  const searchIndex = [];
+  for (const date of dates) {
+    const posts = JSON.parse(fs.readFileSync(path.join(DATA_DIR, date + '.json'), 'utf-8'));
+    posts.forEach((post, idx) => {
+      searchIndex.push({ t: post.title, d: date, i: idx });
+    });
+  }
+  fs.writeFileSync(path.join(DIST_DIR, 'search-index.json'), JSON.stringify(searchIndex));
+  console.log(`Generated search-index.json (${searchIndex.length} entries)`);
 
   // Generate Atom feed (last 60 days, skip empty)
   const siteUrl = 'https://jiacai2050.github.io/mofish';
@@ -88,8 +102,8 @@ function main() {
 
     feed += `  <entry>
     <title>${escapeXml(date + ' - ' + posts[0].title)}</title>
-    <link href="${siteUrl}/${date}.html"/>
-    <id>${siteUrl}/${date}.html</id>
+    <link href="${siteUrl}/${date}"/>
+    <id>${siteUrl}/${date}</id>
     <updated>${date}T00:00:00Z</updated>
     <content type="html"><![CDATA[${content}]]></content>
   </entry>

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= date %> - Mofish</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
   <main class="container">
@@ -19,9 +19,9 @@
 
     <div class="content">
     <nav class="nav-links">
-      <% if (prev) { %><a href="<%= prev %>.html">&larr; <%= prev %></a><% } else { %><span></span><% } %>
-      <a href="index.html">首页</a>
-      <% if (next) { %><a href="<%= next %>.html"><%= next %> &rarr;</a><% } else { %><span></span><% } %>
+      <% if (prev) { %><a href="../<%= prev %>">&larr; <%= prev %></a><% } else { %><span></span><% } %>
+      <a href="../">首页</a>
+      <% if (next) { %><a href="../<%= next %>"><%= next %> &rarr;</a><% } else { %><span></span><% } %>
     </nav>
 
     <h1><%= date %></h1>
@@ -45,9 +45,9 @@
     <% }); %>
 
     <nav class="nav-links">
-      <% if (prev) { %><a href="<%= prev %>.html">&larr; <%= prev %></a><% } else { %><span></span><% } %>
-      <a href="index.html">首页</a>
-      <% if (next) { %><a href="<%= next %>.html"><%= next %> &rarr;</a><% } else { %><span></span><% } %>
+      <% if (prev) { %><a href="../<%= prev %>">&larr; <%= prev %></a><% } else { %><span></span><% } %>
+      <a href="../">首页</a>
+      <% if (next) { %><a href="../<%= next %>"><%= next %> &rarr;</a><% } else { %><span></span><% } %>
     </nav>
 
     <footer>
