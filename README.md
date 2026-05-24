@@ -1,7 +1,8 @@
 # mofish
 
-[![newsletter](https://github.com/jiacai2050/hot-posts/workflows/newsletter/badge.svg)](https://github.com/jiacai2050/mofish/actions/workflows/newsletter.yml) [![v2ex-fetch](https://github.com/jiacai2050/hot-posts/workflows/v2ex-fetch/badge.svg)](https://github.com/jiacai2050/mofish/actions/workflows/v2ex-fetch.yml)
-[![hackernews-fetch](https://github.com/jiacai2050/mofish/workflows/hackernews-fetch/badge.svg)](https://github.com/jiacai2050/mofish/actions/workflows/hackernews-fetch.yml)
+[![newsletter](https://github.com/jiacai2050/mofish/actions/workflows/newsletter.yml/badge.svg)](https://github.com/jiacai2050/mofish/actions/workflows/newsletter.yml) [![v2ex-fetch](https://github.com/jiacai2050/mofish/actions/workflows/v2ex-fetch.yml/badge.svg)](https://github.com/jiacai2050/mofish/actions/workflows/v2ex-fetch.yml)
+[![hackernews-fetch](https://github.com/jiacai2050/mofish/actions/workflows/hackernews-fetch.yml/badge.svg)](https://github.com/jiacai2050/mofish/actions/workflows/hackernews-fetch.yml)
+[![pages](https://github.com/jiacai2050/mofish/actions/workflows/pages.yml/badge.svg)](https://github.com/jiacai2050/mofish/actions/workflows/pages.yml)
 
 > 了解社区最新动态，掌握摸鱼最佳姿势。
 
@@ -17,11 +18,11 @@ mofish 是一个收集和整理互联网社区热门帖子的项目，旨在帮�
 
 ## 网站
 
-在线浏览：https://jiacai2050.github.io/mofish
+在线浏览：http://news.liujiacai.net
 
 - 首页按月归档，每天展示 top1 热帖标题
 - 点击日期查看当天所有热帖及 AI 摘要
-- 支持 [RSS 订阅](https://jiacai2050.github.io/mofish/feed.xml)
+- 支持 [RSS 订阅](http://news.liujiacai.net/feed.xml)
 
 ## 数据源
 

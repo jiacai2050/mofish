@@ -2,6 +2,12 @@ name: "Deploy to GitHub Pages"
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - 'templates/**'
   workflow_run:
     workflows: ["newsletter"]
     types:

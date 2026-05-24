@@ -39,6 +39,7 @@ function main() {
 
   fs.copyFileSync(path.join(TEMPLATE_DIR, 'style.css'), path.join(DIST_DIR, 'style.css'));
   fs.copyFileSync(path.join(TEMPLATE_DIR, 'search.js'), path.join(DIST_DIR, 'search.js'));
+  fs.writeFileSync(path.join(DIST_DIR, 'CNAME'), 'news.liujiacai.net\n');
 
   const indexHtml = ejs.render(indexTemplate, { months });
   fs.writeFileSync(path.join(DIST_DIR, 'index.html'), indexHtml);
@@ -75,7 +76,7 @@ function main() {
   console.log(`Generated search-index.json (${searchIndex.length} entries)`);
 
   // Generate Atom feed (last 60 days, skip empty)
-  const siteUrl = 'https://jiacai2050.github.io/mofish';
+  const siteUrl = 'http://news.liujiacai.net';
   const recentDates = dates.slice().reverse().filter(date => {
     const data = JSON.parse(fs.readFileSync(path.join(DATA_DIR, date + '.json'), 'utf-8'));
     return data.length > 0;
