@@ -79,7 +79,12 @@ function main() {
 
   for (const date of recentDates) {
     const posts = JSON.parse(fs.readFileSync(path.join(DATA_DIR, date + '.json'), 'utf-8'));
-    const content = posts.map((p, i) => `<p><strong>${i + 1}. <a href="${p.url || 'https://news.ycombinator.com/item?id=' + p.id}">${escapeXml(p.title)}</a></strong> (${p.score || 0} points, <a href="https://news.ycombinator.com/item?id=${p.id}">${p.descendants || 0} comments</a>)</p>`).join('\n');
+    const content = posts.map((p, i) => {
+      const title = `<h3>${i + 1}. <a href="${p.url || 'https://news.ycombinator.com/item?id=' + p.id}">${escapeXml(p.title)}</a></h3>`;
+      const meta = `<p><em>${p.score || 0} points | <a href="https://news.ycombinator.com/item?id=${p.id}">${p.descendants || 0} comments</a>${p.by ? ' | by ' + escapeXml(p.by) : ''}</em></p>`;
+      const summary = p.summary ? marked(p.summary) : '';
+      return title + meta + summary + '<hr>';
+    }).join('\n');
 
     feed += `  <entry>
     <title>${escapeXml(date + ' - ' + posts[0].title)}</title>
