@@ -14,12 +14,15 @@ async function fetch_post(start_ts, end_ts) {
   q.lessThan("time", end_ts);
   q.descending("score");
 
-  let results = await q.find();
+  let results = (await q.find()) || [];
   let posts = [];
-  for (let post of results) {
+  for (let i=0;i<results.length;i++) {
+    const post = results[i];
     const o = post.toJSON();
     const url = get_post_url(o);
-    o["summary"] = (await get_summary(url)) || url;
+    const title = o['title'];
+    console.log(`[${i+1}/${results.length}] Summarize for ${url}`);
+    o["summary"] = (await get_summary(url, title)) || url;
     add_extra_fields(o);
     posts.push(o);
   }
@@ -37,9 +40,9 @@ function add_extra_fields(post) {
   post["hostname"] = new URL(url).hostname.replace("www.", "");
 }
 
-async function get_summary(url) {
+async function get_summary(url, title) {
   try {
-    const summary = await ai_summarize(url);
+    const summary = await ai_summarize(url, title);
     if (summary) {
       return summary;
     }
@@ -60,9 +63,10 @@ async function page_desc(url) {
   );
 }
 
-async function ai_summarize(url) {
+async function ai_summarize(url, title) {
   const params = new URLSearchParams({
     url,
+    title,
     // https://developers.cloudflare.com/workers-ai/models/gemma-3-12b-it/
     // context: 80,000
     // model: "@cf/google/gemma-3-12b-it",
@@ -86,7 +90,7 @@ async function ai_summarize(url) {
     console.warn(
       `AI summarize failed for ${url}, retry:${retry}, status:${resp.status}, text:${text}`,
     );
-    if (resp.status >= 500) {
+    if (resp.status >= 499) {
       await sleep(10000 * retry);
     } else {
       return null;
