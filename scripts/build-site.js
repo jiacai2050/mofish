@@ -55,6 +55,7 @@ function main() {
 
     const postsWithHtml = posts.map(post => ({
       ...post,
+      hostname: post.url ? new URL(post.url).hostname : null,
       summaryHtml: post.summary ? marked(post.summary) : null,
     }));
 

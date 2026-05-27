@@ -30,7 +30,8 @@
     <article class="post" id="post-<%= idx %>">
       <details open>
         <summary>
-          <strong><a href="<%= post.url || ('https://news.ycombinator.com/item?id=' + post.id) %>" target="_blank" rel="noopener"><%= post.title %></a></strong>
+          <strong><%= post.title %></strong>
+          <% if (post.hostname) { %><a href="<%= post.url %>" target="_blank" rel="noopener" class="post-hostname">(<%= post.hostname %>)</a><% } %>
           <span class="post-meta">
             <% if (post.score) { %><%= post.score %> points<% } %>
             <% if (post.descendants != null) { %> | <a href="https://news.ycombinator.com/item?id=<%= post.id %>" target="_blank" rel="noopener"><%= post.descendants %> comments</a><% } %>
