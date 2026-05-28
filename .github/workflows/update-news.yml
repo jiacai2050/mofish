@@ -1,0 +1,48 @@
+name: "update-news"
+
+on:
+  workflow_dispatch:
+    inputs:
+      day:
+        description: "Date to update (YYYY-MM-DD)"
+        required: true
+      overwrite:
+        description: "Overwrite existing data"
+        type: boolean
+        default: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v6
+      - name: Cache node modules
+        uses: actions/cache@v5
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - run: npm i
+      - name: Update news data
+        env:
+          LEANCLOUD_APP_ID: ${{ secrets.US_LEANCLOUD_APP_ID }}
+          LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
+          LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
+        run: |
+          args="--day ${{ github.event.inputs.day }}"
+          if [ "${{ github.event.inputs.overwrite }}" = "true" ]; then
+            args="$args --overwrite"
+          fi
+          node actions/update-news.js $args
+      - name: Commit data
+        uses: EndBug/add-and-commit@v10
+        with:
+          author_name: mofish-bot
+          add: "data"
+          message: "Update news for ${{ github.event.inputs.day }}"
