@@ -78,7 +78,8 @@ async function ai_summarize(url, title) {
     // context: 131,000
     // model: "@cf/zai-org/glm-4.7-flash",
   });
-  for (let retry = 1; retry <= 5; retry++) {
+  const maxTries = 2;
+  for (let retry = 1; retry <= maxTries; retry++) {
     const resp = await fetch(
       `https://api.liujiacai.net/ai/summary?${params.toString()}`,
     );
@@ -90,8 +91,8 @@ async function ai_summarize(url, title) {
     console.warn(
       `AI summarize failed for ${url}, retry:${retry}, status:${resp.status}, text:${text}`,
     );
-    if (resp.status >= 499) {
-      await sleep(10000 * retry);
+    if (resp.status >= 499 && retry < maxTries) {
+      await sleep(5000 * retry);
     } else {
       return null;
     }

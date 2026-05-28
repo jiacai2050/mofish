@@ -11,7 +11,35 @@
     }
   });
 
+  let activeIdx = -1;
+
+  function updateActive() {
+    const items = results.querySelectorAll('li');
+    items.forEach((li, i) => li.classList.toggle('active', i === activeIdx));
+    if (activeIdx >= 0 && items[activeIdx]) items[activeIdx].scrollIntoView({ block: 'nearest' });
+  }
+
+  input.addEventListener('keydown', function(e) {
+    const items = results.querySelectorAll('li');
+    if (!items.length) return;
+
+    if (e.key === 'ArrowDown' || (e.ctrlKey && e.code === 'KeyN')) {
+      e.preventDefault();
+      activeIdx = (activeIdx + 1) % items.length;
+      updateActive();
+    } else if (e.key === 'ArrowUp' || (e.ctrlKey && e.code === 'KeyP')) {
+      e.preventDefault();
+      activeIdx = (activeIdx - 1 + items.length) % items.length;
+      updateActive();
+    } else if (e.key === 'Enter' && activeIdx >= 0) {
+      e.preventDefault();
+      const link = items[activeIdx].querySelector('a');
+      if (link) link.click();
+    }
+  });
+
   input.addEventListener('input', function() {
+    activeIdx = -1;
     const query = this.value.trim().toLowerCase();
     if (!query || !index) {
       results.innerHTML = '';

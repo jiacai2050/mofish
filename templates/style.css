@@ -16,6 +16,7 @@
 #search-results li:last-child { border-bottom: none; }
 #search-results li a { text-decoration: none; }
 #search-results li small { color: var(--pico-muted-color); margin-left: 0.5rem; }
+#search-results li.active { background: var(--pico-primary-focus); }
 
 /* day page */
 .nav-links { display: flex; justify-content: space-between; margin-bottom: 1rem; }

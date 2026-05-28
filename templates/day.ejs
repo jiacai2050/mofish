@@ -30,7 +30,7 @@
     <article class="post" id="post-<%= idx %>">
       <details open>
         <summary>
-          <strong><%= post.title %></strong>
+          <strong><%= idx + 1 %>. <%= post.title %></strong>
           <% if (post.hostname) { %><a href="<%= post.url %>" target="_blank" rel="noopener" class="post-hostname">(<%= post.hostname %>)</a><% } %>
           <span class="post-meta">
             <% if (post.score) { %><%= post.score %> points<% } %>
