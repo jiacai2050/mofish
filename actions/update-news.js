@@ -2,15 +2,28 @@ require("../dep");
 const fs = require("fs");
 const moment = require("moment");
 const { argv } = require("yargs");
-const hn = require("./hacker-news/mail");
+const { Query } = require("leancloud-storage");
+const { JSDOM } = require("jsdom");
+const { Readability } = require("@mozilla/readability");
 
 const DATA_DIR = `${__dirname}/../data`;
+const POST_TABLE_NAME = "hackernews";
+
+const OPENAI_API_URL = process.env.OPENAI_API_URL || "https://api.openai.com/v1";
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
 
 async function main() {
   if (!argv.day) {
     console.error("Usage: node actions/update-news.js --day YYYY-MM-DD");
+    console.error("Env: OPENAI_API_URL, OPENAI_API_KEY, OPENAI_MODEL");
     process.exit(1);
   }
+  if (!OPENAI_API_KEY) {
+    console.error("Error: OPENAI_API_KEY is required");
+    process.exit(1);
+  }
+
   let day = typeof argv.day === "number" ? String(argv.day) : argv.day;
   const dayMoment = moment(day).startOf("day");
   const day_str = dayMoment.format("YYYY-MM-DD");
@@ -25,15 +38,35 @@ async function main() {
     return;
   }
 
-  const posts = await hn.fetch_post(start_ts, end_ts);
+  // Fetch posts from LeanCloud
+  let q = new Query(POST_TABLE_NAME);
+  q.limit(50);
+  q.greaterThanOrEqualTo("time", start_ts);
+  q.lessThan("time", end_ts);
+  q.descending("score");
+  const results = (await q.find()) || [];
+  const posts = results.map((r) => r.toJSON());
   console.log(`Fetched ${posts.length} posts`);
+
+  // Summarize each post
+  for (let i = 0; i < posts.length; i++) {
+    const post = posts[i];
+    const url = post.url || `https://news.ycombinator.com/item?id=${post.id}`;
+    console.log(`[${i + 1}/${posts.length}] Summarizing: ${url}`);
+    try {
+      const content = await extractContent(url);
+      if (content && content.length > 0) {
+        post.summary = await summarize(content, post.title);
+      }
+    } catch (e) {
+      console.warn(`  Failed: ${e.message}`);
+      post.summary = "";
+    }
+  }
 
   // Clean up fields before saving
   for (const post of posts) {
     for (const field of [
-      "summary_html",
-      "created",
-      "hostname",
       "kids",
       "createdAt",
       "updatedAt",
@@ -45,6 +78,67 @@ async function main() {
 
   fs.writeFileSync(filepath, JSON.stringify(posts));
   console.log(`Saved ${posts.length} posts to ${filepath}`);
+}
+
+async function extractContent(url) {
+  const resp = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; mofish-bot/1.0)" },
+    signal: AbortSignal.timeout(15000*2),
+  });
+  const html = await resp.text();
+  const dom = new JSDOM(html, { url });
+  const reader = new Readability(dom.window.document);
+  const article = reader.parse();
+  if (article && article.textContent) {
+    return article.textContent;
+  }
+  return html;
+}
+
+const SUMMARY_SYSTEM_PROMPT = `
+Your task is to read the provided content and generate a concise,
+accurate summary that captures the main points and essential details in less than 800 words.
+Do not include personal opinions or information not present in the original content.
+If the content is technical (such as code or documentation), focus on summarizing its purpose,
+structure, and key functionality. Reply using markdown format, and Chinese language.
+
+⚠️ STRICTION:
+- Start directly with the summary content.
+- Do NOT include any introductory or concluding remarks, such as "Here is the summary:", "好的，以下是...", or "收到".
+- Go straight into the markdown content.`;
+
+async function summarize(content, title) {
+  if (!content) return "";
+  const resp = await fetch(OPENAI_API_URL + "/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      messages: [
+        {
+          role: "system",
+          content: SUMMARY_SYSTEM_PROMPT,
+        },
+        {
+          role: "user",
+          content: `文章标题：${title}\n\n文章内容：\n${content}`,
+        },
+      ],
+    }),
+    signal: AbortSignal.timeout(60000*3),
+  });
+
+  // const text = await resp.text();
+  // console.log(`Get ${text}`);
+  // const data = JSON.parse(text);
+  const data = await resp.json();
+  if (!resp.ok) {
+    throw new Error(`API error: ${resp.status} ${JSON.stringify(data)}`);
+  }
+  return data.choices[0].message.content;
 }
 
 main().catch((e) => {
