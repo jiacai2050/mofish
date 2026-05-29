@@ -8,6 +8,7 @@ const { Readability } = require("@mozilla/readability");
 
 const DATA_DIR = `${__dirname}/../data`;
 const POST_TABLE_NAME = "hackernews";
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0';
 
 const OPENAI_API_URL = process.env.OPENAI_API_URL || "https://api.openai.com/v1";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -81,18 +82,27 @@ async function main() {
 }
 
 async function extractContent(url) {
-  const resp = await fetch(url, {
-    headers: { "User-Agent": "Mozilla/5.0 (compatible; mofish-bot/1.0)" },
-    signal: AbortSignal.timeout(15000*2),
-  });
-  const html = await resp.text();
-  const dom = new JSDOM(html, { url });
-  const reader = new Readability(dom.window.document);
-  const article = reader.parse();
-  if (article && article.textContent) {
-    return article.textContent;
+  try {
+    const resp = await fetch(url, {
+      headers: { "User-Agent": UA },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const html = await resp.text();
+    const dom = new JSDOM(html, { url });
+    const reader = new Readability(dom.window.document);
+    const article = reader.parse();
+    if (article && article.textContent && article.textContent.trim().length > 100) {
+      return article.textContent;
+    }
+  } catch (e) {
+    console.warn(`  Readability failed: ${e.message}, trying fallback...`);
   }
-  return html;
+  const resp = await fetch(`https://api.liujiacai.net/ai/markdown?url=${encodeURIComponent(url)}`, {
+    signal: AbortSignal.timeout(30000),
+  });
+  if (!resp.ok) throw new Error(`Fallback API error: ${resp.status}`);
+  return await resp.text();
 }
 
 const SUMMARY_SYSTEM_PROMPT = `
