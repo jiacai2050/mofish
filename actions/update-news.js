@@ -3,7 +3,7 @@ const fs = require("fs");
 const moment = require("moment");
 const { argv } = require("yargs");
 const { Query } = require("leancloud-storage");
-const { JSDOM } = require("jsdom");
+const { JSDOM, VirtualConsole } = require("jsdom");
 const { Readability } = require("@mozilla/readability");
 
 const DATA_DIR = `${__dirname}/../data`;
@@ -34,46 +34,61 @@ async function main() {
   console.log(`Fetching posts for ${day_str} [${start_ts}, ${end_ts})`);
 
   const filepath = `${DATA_DIR}/${day_str}.json`;
-  if (!argv.overwrite && fs.existsSync(filepath)) {
-    console.log(`Skip: ${filepath} already exists`);
-    return;
-  }
+  let posts;
 
-  // Fetch posts from LeanCloud
-  let q = new Query(POST_TABLE_NAME);
-  q.limit(50);
-  q.greaterThanOrEqualTo("time", start_ts);
-  q.lessThan("time", end_ts);
-  q.descending("score");
-  const results = (await q.find()) || [];
-  const posts = results.map((r) => r.toJSON());
-  console.log(`Fetched ${posts.length} posts`);
-
-  // Summarize each post
-  for (let i = 0; i < posts.length; i++) {
-    const post = posts[i];
-    const url = post.url || `https://news.ycombinator.com/item?id=${post.id}`;
-    console.log(`[${i + 1}/${posts.length}] Summarizing: ${url}`);
-    try {
-      const content = await extractContent(url);
-      if (content && content.length > 0) {
-        post.summary = await summarize(content, post.title);
+  if (fs.existsSync(filepath)) {
+    // Load existing data, re-summarize posts with short summaries
+    posts = JSON.parse(fs.readFileSync(filepath, "utf-8"));
+    console.log(`Loaded ${posts.length} posts from existing file`);
+    let updated = 0;
+    for (let i = 0; i < posts.length; i++) {
+      const post = posts[i];
+      if (post.summary && post.summary.length >= 100) continue;
+      const url = post.url || `https://news.ycombinator.com/item?id=${post.id}`;
+      console.log(`[${i + 1}/${posts.length}] Re-summarizing: ${url}`);
+      try {
+        const content = await extractContent(url);
+        if (content && content.length > 0) {
+          post.summary = await summarize(content, post.title);
+          updated++;
+        }
+      } catch (e) {
+        console.warn(`  Failed: ${e.message}`);
       }
-    } catch (e) {
-      console.warn(`  Failed: ${e.message}`);
-      post.summary = "";
     }
-  }
+    console.log(`Updated ${updated} summaries`);
+  } else {
+    // Fetch posts from LeanCloud
+    let q = new Query(POST_TABLE_NAME);
+    q.limit(50);
+    q.greaterThanOrEqualTo("time", start_ts);
+    q.lessThan("time", end_ts);
+    q.descending("score");
+    const results = (await q.find()) || [];
+    posts = results.map((r) => r.toJSON());
+    console.log(`Fetched ${posts.length} posts from LeanCloud`);
 
-  // Clean up fields before saving
-  for (const post of posts) {
-    for (const field of [
-      "kids",
-      "createdAt",
-      "updatedAt",
-      "objectId",
-    ]) {
-      delete post[field];
+    // Summarize each post
+    for (let i = 0; i < posts.length; i++) {
+      const post = posts[i];
+      const url = post.url || `https://news.ycombinator.com/item?id=${post.id}`;
+      console.log(`[${i + 1}/${posts.length}] Summarizing: ${url}`);
+      try {
+        const content = await extractContent(url);
+        if (content && content.length > 0) {
+          post.summary = await summarize(content, post.title);
+        }
+      } catch (e) {
+        console.warn(`  Failed: ${e.message}`);
+        post.summary = "";
+      }
+    }
+
+    // Clean up fields before saving
+    for (const post of posts) {
+      for (const field of ["kids", "createdAt", "updatedAt", "objectId"]) {
+        delete post[field];
+      }
     }
   }
 
@@ -89,7 +104,8 @@ async function extractContent(url) {
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const html = await resp.text();
-    const dom = new JSDOM(html, { url });
+    const virtualConsole = new VirtualConsole();
+    const dom = new JSDOM(html, { url, virtualConsole });
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
     if (article && article.textContent && article.textContent.trim().length > 100) {
