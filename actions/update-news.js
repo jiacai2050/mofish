@@ -43,7 +43,8 @@ async function main() {
     let updated = 0;
     for (let i = 0; i < posts.length; i++) {
       const post = posts[i];
-      if (post.summary && post.summary.length >= 100) continue;
+      // Skip if summary is long enough and contains Chinese
+      if (post.summary && post.summary.length >= 100 && /[\u4e00-\u9fff]/.test(post.summary)) continue;
       const url = post.url || `https://news.ycombinator.com/item?id=${post.id}`;
       console.log(`[${i + 1}/${posts.length}] Re-summarizing: ${url}`);
       try {
@@ -103,6 +104,8 @@ async function extractContent(url) {
       signal: AbortSignal.timeout(10000),
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const contentType = resp.headers.get("content-type") || "";
+    if (!contentType.includes("text/html")) throw new Error(`Not HTML: ${contentType}`);
     const html = await resp.text();
     const virtualConsole = new VirtualConsole();
     const dom = new JSDOM(html, { url, virtualConsole });
