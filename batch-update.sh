@@ -13,4 +13,4 @@ cur="$start"
 while [[ "$cur" < "$end" || "$cur" == "$end" ]]; do
   echo "$cur"
   cur=$(date -d "$cur + 1 day" "+%Y-%m-%d" 2>/dev/null || date -j -v+1d -f "%Y-%m-%d" "$cur" "+%Y-%m-%d")
-done | xargs -P2 -I{} bash -c 'node actions/update-news.js --day {} >> /tmp/hnews-summary.log 2>&1'
+done | xargs -P4 -I{} bash -c 'node actions/update-news.js --day {} >> /tmp/hnews-summary.log 2>&1'
