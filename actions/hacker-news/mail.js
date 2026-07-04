@@ -73,12 +73,16 @@ async function ai_summarize(url, title) {
 
     // https://developers.cloudflare.com/workers-ai/models/kimi-k2.5/
     // context: 256,000 tokens
-    model: "@cf/moonshotai/kimi-k2.5",
+    // model: "@cf/moonshotai/kimi-k2.5",
+
     // https://developers.cloudflare.com/workers-ai/models/glm-4.7-flash/
     // context: 131,000
     // model: "@cf/zai-org/glm-4.7-flash",
+
+    model: "google-ai-studio/gemini-flash-latest",
+    provider: "openai",
   });
-  const maxTries = 2;
+  const maxTries = 3;
   for (let retry = 1; retry <= maxTries; retry++) {
     const resp = await fetch(
       `https://api.liujiacai.net/ai/summary?${params.toString()}`,
