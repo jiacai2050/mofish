@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日精选 V2EX 热帖，方便快速浏览</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="alternate" type="application/atom+xml" title="每日精选 V2EX 热帖" href="feed.xml">
+</head>
+<body>
+  <main class="container">
+    <p>每日精选 V2EX 热帖，方便快速浏览。 <a href="feed.xml">RSS</a> | <a href="https://github.com/jiacai2050/mofish">GitHub</a></p>
+    <div class="search-box">
+      <input type="search" id="search-input" placeholder="搜索帖子标题...">
+      <ul id="search-results"></ul>
+    </div>
+    <% months.forEach(function(month) { %>
+    <section class="month-section">
+      <h2><%= month.label %></h2>
+      <ul class="day-list">
+        <% month.days.forEach(function(day) { %>
+        <li>
+          <a href="<%= day.date %>"><span class="day-date"><%= day.date %></span><span class="day-top1"><%= day.top1 || '-' %></span></a>
+        </li>
+        <% }); %>
+      </ul>
+    </section>
+    <% }); %>
+    <footer>
+      <p><small>数据来源: <a href="https://www.v2ex.com">V2EX</a> | <a href="https://github.com/jiacai2050/mofish">GitHub</a> | <a href="feed.xml">Feed</a></small></p>
+    </footer>
+  </main>
+  <script src="search.js"></script>
+</body>
+</html>

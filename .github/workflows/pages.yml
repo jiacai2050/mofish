@@ -33,7 +33,17 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - run: npm ci
-      - run: node scripts/build-site.js
+      - name: Resolve build date
+        run: |
+          echo "POST_DATE=$(TZ=':Asia/Shanghai' date --date='1 days ago' '+%Y%m%d')" >> $GITHUB_ENV
+      - name: Build static sites
+        env:
+          LEANCLOUD_APP_ID: ${{ secrets.US_LEANCLOUD_APP_ID }}
+          LEANCLOUD_APP_KEY: ${{ secrets.US_LEANCLOUD_APP_KEY }}
+          LEANCLOUD_MASTER_KEY: ${{ secrets.US_LEANCLOUD_MASTER_KEY }}
+        run: |
+          node scripts/build-site.js
+          node scripts/build-v2ex-site.js --day $POST_DATE
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

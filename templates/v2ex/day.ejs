@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= date %> - V2EX</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main class="container">
+    <nav class="toc">
+      <ol>
+        <% posts.forEach(function(post, idx) { %>
+        <li><a href="#post-<%= idx %>"><%= post.title %></a></li>
+        <% }); %>
+      </ol>
+    </nav>
+
+    <div class="content">
+      <nav class="nav-links">
+        <% if (prev) { %><a href="../<%= prev %>">&larr; <%= prev %></a><% } else { %><span></span><% } %>
+        <a href="../">首页</a>
+        <% if (next) { %><a href="../<%= next %>"><%= next %> &rarr;</a><% } else { %><span></span><% } %>
+      </nav>
+
+      <h1><%= date %></h1>
+      <p><%= posts.length %> 篇热帖</p>
+      <% posts.forEach(function(post, idx) { %>
+      <article class="post" id="post-<%= idx %>">
+        <details open>
+          <summary>
+            <strong><%= idx + 1 %>. <%= post.title %></strong>
+            <span class="post-meta">
+              <% if (post.replies != null) { %><a href="<%= post.url %>" target="_blank" rel="noopener"><%= post.replies %> replies</a><% } %>
+              <% if (post.author) { %> | by <%= post.author %><% } %>
+              <% if (post.node) { %> | in <a href="<%= post.node_url %>" target="_blank" rel="noopener"><%= post.node %></a><% } %>
+              <% if (post.created) { %> | <%= post.created %><% } %>
+            </span>
+          </summary>
+          <% if (post.description) { %>
+          <div class="post-summary"><%- post.description %></div>
+          <% } %>
+        </details>
+      </article>
+      <% }); %>
+
+      <nav class="nav-links">
+        <% if (prev) { %><a href="../<%= prev %>">&larr; <%= prev %></a><% } else { %><span></span><% } %>
+        <a href="../">首页</a>
+        <% if (next) { %><a href="../<%= next %>"><%= next %> &rarr;</a><% } else { %><span></span><% } %>
+      </nav>
+
+      <footer>
+        <p><small><a href="https://github.com/jiacai2050/mofish">GitHub</a></small></p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

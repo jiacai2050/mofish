@@ -3,6 +3,7 @@ const fs = require("fs");
 const { Console } = require("console");
 const hn = require("./hacker-news/mail");
 const v2ex = require("./v2ex/mail");
+const { write_day_posts } = require("../scripts/build-v2ex-site");
 const juice = require("juice");
 const moment = require("moment");
 const { argv } = require("yargs");
@@ -64,6 +65,7 @@ async function main() {
   let v2ex_posts = [];
   try {
     v2ex_posts = await v2ex.fetch_post(start_ts, end_ts);
+    write_day_posts(day_str, v2ex_posts);
   } catch (e) {
     console.log(`fetch v2ex post failed: ${e}`);
   }
