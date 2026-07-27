@@ -24,6 +24,8 @@ async function fetch_post(start_ts, end_ts) {
       description: post.get('content_rendered'),
       url: post.get('url'),
       replies: post.get('replies'),
+      // created_ts is used for date grouping and sorting; created is for display.
+      created_ts: post.get('created'),
       created: moment(post.get('created') * 1000).format('HH:mm:ss'),
       title: post.get('title'),
       author: post.get('member')['username'],
