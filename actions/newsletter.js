@@ -3,7 +3,7 @@ const fs = require("fs");
 const { Console } = require("console");
 const hn = require("./hacker-news/mail");
 const v2ex = require("./v2ex/mail");
-const { write_day_posts } = require("../scripts/build-v2ex-site");
+const { write_day_posts } = require("./v2ex/storage");
 const juice = require("juice");
 const moment = require("moment");
 const { argv } = require("yargs");
@@ -90,6 +90,7 @@ async function main() {
         github_repo: github_repo,
         data_time: day_str,
         title: titles.join(" — "),
+        format_time: (timestamp) => moment(timestamp * 1000).format("HH:mm:ss"),
       },
       { views: [`${__dirname}/../public`] },
     );

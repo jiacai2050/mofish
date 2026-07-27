@@ -35,7 +35,7 @@
               <% if (post.replies != null) { %><a href="<%= post.url %>" target="_blank" rel="noopener"><%= post.replies %> replies</a><% } %>
               <% if (post.author) { %> | by <%= post.author %><% } %>
               <% if (post.node) { %> | in <a href="<%= post.node_url %>" target="_blank" rel="noopener"><%= post.node %></a><% } %>
-              <% if (post.created) { %> | <%= post.created %><% } %>
+              <% if (post.created_ts) { %> | <%= format_time(post.created_ts) %><% } %>
             </span>
           </summary>
           <% if (post.description) { %>

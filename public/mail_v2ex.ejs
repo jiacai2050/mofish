@@ -13,7 +13,7 @@
     <div class="footer">
     <p>
     <%= post.replies %> comments by <a href="<%- post.author_url %>"><%= post.author %></a>
-    at <%= post.created %>
+    at <%= format_time(post.created_ts) %>
     in <a href="<%- post.node_url %>"><%= post.node %></a>
     </p>
     </div>
