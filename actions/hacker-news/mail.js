@@ -67,17 +67,9 @@ async function ai_summarize(url, title) {
   const params = new URLSearchParams({
     url,
     title,
-    // https://developers.cloudflare.com/workers-ai/models/gemma-3-12b-it/
-    // context: 80,000
-    // model: "@cf/google/gemma-3-12b-it",
-
-    // https://developers.cloudflare.com/workers-ai/models/kimi-k2.6/
-    // context: 262,144 tokens
-    model: "@cf/moonshotai/kimi-k2.6",
-
-    // https://developers.cloudflare.com/workers-ai/models/glm-4.7-flash/
-    // context: 131,000
-    // model: "@cf/zai-org/glm-4.7-flash",
+    // https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/
+    // 256,000 tokens
+    model: "@cf/google/gemma-4-26b-a4b-it"
 
     // model: "google-ai-studio/gemini-flash-latest",
     // provider: "openai",
