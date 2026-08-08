@@ -120,15 +120,13 @@ jobs:
           node db/turso.js
       - name: "Send mail"
         if: "!cancelled()"
-        env:
-          MAIL_SMTP_URL: "smtps://smtp.gmail.com"
-          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
-          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-          MAIL_FROM: "HNews Digest <${{ secrets.MAIL_USERNAME }}>"
-          MAIL_TO: "mo-fish@googlegroups.com"
-          MAIL_SUBJECT: "${{env.TITLE}}"
-          MAIL_HTML_BODY_FILE: ${{ env.HTML_OUTPUT }}
-          MAIL_TEXT_BODY_FILE: ${{ env.TEXT_OUTPUT }}
-        run: |
-          echo "Sending mail..."
-          .github/send-mail.sh
+        uses: jiacai2050/sendmail-action@v1
+        with:
+          smtp_url: "smtps://smtp.gmail.com"
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: "HNews Digest <${{ secrets.MAIL_USERNAME }}>"
+          to: "mo-fish@googlegroups.com"
+          subject: "${{env.TITLE}}"
+          html_body_file: ${{ env.HTML_OUTPUT }}
+          body_file: ${{ env.TEXT_OUTPUT }}
