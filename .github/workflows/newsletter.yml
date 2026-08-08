@@ -119,15 +119,16 @@ jobs:
           export TURSO_TOKEN="${{ secrets.TURSO_TOKEN }}"
           node db/turso.js
       - name: "Send mail"
-        uses: dawidd6/action-send-mail@v16
         if: "!cancelled()"
-        with:
-          server_address: ${{ secrets.SMTP_SERVER }}
-          server_port: ${{ secrets.SMTP_PORT }}
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: ${{env.TITLE}}
-          body: file://${{ env.TEXT_OUTPUT }}
-          html_body: file://${{ env.HTML_OUTPUT }}
-          to: mo-fish@googlegroups.com
-          from: HNews Digest <newsletter@liujiacai.net>
+        env:
+          MAIL_SMTP_URL: "smtps://smtp.gmail.com"
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_FROM: "HNews Digest <${{ secrets.MAIL_USERNAME }}"
+          MAIL_TO: "mo-fish@googlegroups.com"
+          MAIL_SUBJECT: "${{env.TITLE}}"
+          MAIL_HTML_BODY_FILE: ${{ env.HTML_OUTPUT }}
+          MAIL_TEXT_BODY_FILE: ${{ env.TEXT_OUTPUT }}
+        run: |
+          echo "Sending mail..."
+          .github/send-mail.sh
