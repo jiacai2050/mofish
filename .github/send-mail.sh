@@ -159,7 +159,7 @@ echo "==> Sending email via curl to $MAIL_TO..."
 
 # 3. Send via curl and check exit status
 set +e
-curl -v --fail --show-error \
+curl --fail --show-error \
   --url "$SMTP_URL" \
   --user "$USERNAME:$PASSWORD" \
   --mail-from "$ENVELOPE_FROM" \
