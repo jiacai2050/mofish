@@ -41,7 +41,7 @@ jobs:
           fi
           node actions/update-news.js $args
       - name: Commit data
-        uses: EndBug/add-and-commit@v10
+        uses: EndBug/add-and-commit@v11
         with:
           author_name: mofish-bot
           add: "data"
